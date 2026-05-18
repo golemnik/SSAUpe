@@ -1,0 +1,87 @@
+/* Контейнер шапки */
+.header__container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1721px;
+    padding: 20px;
+    margin: 0 auto;
+    background-color: var(--color-ice-effect);
+}
+
+/* Левая секция контента */
+.header__content-group {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    column-gap: 30px;
+}
+
+/* Кнопка "?" (справка) */
+.header__sistem-button {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: center;
+    width: 62px;
+    height: 60px;
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    background-color: var(--color-galactic-highway);
+    color: var(--color-white);
+    border-radius: 15px;
+    text-decoration: none;
+}
+
+/* Эффект при наведении на кнопку справки */
+.header__sistem-button:hover {
+    text-decoration: none;
+    transition: var(--transition-base);
+    background-color: var(--color-persian-indigo);
+}
+
+/* Кнопка-бургер  */
+.menu-button {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    background-color: var(--color-galactic-highway);
+    align-items: center;
+    justify-items: center;
+    width: 62px;
+    height: 60px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    padding-block: 5px;
+}
+
+/* Полоски бургер-меню */
+.menu-button__line {
+    display: block;
+    width: 70%;
+    height: 6px;
+    background-color: var(--color-white);
+    border-radius: 2px;
+}
+
+/* Кнопка Войти  */
+.header__login-button {
+    min-width: 200px;
+    border-radius: 20px;
+    padding: 15px 10px;
+    color: var(--color-white);
+    background-color: var(--color-galactic-highway);
+    border: none;
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    text-align: center;
+}
+
+/* Эффект при наведении на кнопку Войти */
+.header__login-button:hover {
+    text-decoration: none;
+    background-color: var(--color-persian-indigo);
+    transition: var(--transition-base);
+}
+

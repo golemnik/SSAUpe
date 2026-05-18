@@ -1,0 +1,22 @@
+:root {
+  /* Шрифтовые переменные */
+  --font-family-system: system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-primary: 'Roboto', var(--font-family-system);
+  --font-family-secondary: Georgia, 'Times New Roman', var(--font-family-system);
+  
+    /* Размеры для заголовков */
+  --font-size-h1: 2.5rem;   /* 40px */
+  --font-size-h2: 2rem;     /* 32px */
+  --font-size-h3: 1.5rem;   /* 24px */
+  --font-size-h4: 1.25rem;  /* 20px */
+  
+  /* Базовые размеры */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-xs: 0.75rem;   /* 12px */
+  
+  /* Веса */
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+}
+

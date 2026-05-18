@@ -1,0 +1,168 @@
+/* Основной контейнер */
+.auth-layout__container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0 auto;
+  background-color: var(--color-ice-effect);
+}
+
+/* Карточка авторизации */
+.auth-card {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: repeat(2, auto);
+  row-gap: 10px;
+  align-items: start;
+  min-height: 100vh;
+  background-color: var(--color-ice-effect);
+  padding: 20px 15px;
+}
+
+/* Шапка карточки */
+.auth-card__header {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  align-items: center;
+  justify-content: space-between; 
+  column-gap: 50px;
+}
+
+/* Кнопка "?" (справка) */
+.auth-card__sistem-button {
+  display: grid;
+  grid-template-columns: auto;
+  align-items: center;
+  justify-items: center;
+  width: 50px;
+  height: 50px;
+  font-size: var(--font-size-h2);
+  background-color: var(--color-galactic-highway);
+  color: var(--color-white);
+  border-radius: 15px;
+  text-decoration: none;
+}
+
+/* Эффект при наведении на кнопку справки */
+.auth-card__sistem-button:hover {
+  text-decoration: none;
+  transition: var(--transition-base);
+  background-color: var(--color-persian-indigo);
+}
+
+/* Заголовок "Войти" */
+.auth-card__headline {
+  font-size: var(--font-size-h1);
+  margin-bottom: 20px;
+}
+
+/* Текст с ссылкой на регистрацию */
+.auth-card__text {
+  font-size: var(--font-size-h2);
+  margin-bottom: 30px;
+}
+
+/* Ссылка "Зарегистрироваться" */
+.auth-card__reg-link {
+  text-decoration: underline;
+  color: var(--color-persian-indigo);
+}
+
+/* Эффект при наведении на ссылку регистрации */
+.auth-card__reg-link:hover {
+  color: var(--color-galactic-highway);
+  transition: var(--transition-base);
+}
+
+/* Форма */
+.auth-form {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  row-gap: 50px;
+  font-size: var(--font-size-h2);
+}
+
+/* Контейнер полей формы */
+.auth-form__container {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  row-gap: 20px;
+}
+
+/* Группа поля (label + input) */
+.auth-form__group {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  row-gap: 20px;
+}
+
+/* Метка поля */
+.auth-form__label {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Поле ввода */
+.auth-form__input {
+  width: 80%;
+  border-radius: 20px;
+  padding: 12px 15px;
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-h3);
+  font-family: inherit;
+}
+
+/* Фокус на поле ввода */
+.auth-form__input:focus {
+  outline: none;
+  border-color: var(--color-galactic-highway);
+}
+
+/* Сообщение об ошибке */
+.auth-form__error {
+  color: var(--color-error, #e74c3c);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  min-height: 20px;
+}
+
+/* Кнопка отправки формы */
+.auth-form__submit-button {
+  min-width: 350px;
+  border-radius: 20px;
+  padding: 15px 10px;
+  color: var(--color-white);
+  background-color: var(--color-galactic-highway);
+  border: none;
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+/* Эффект при наведении на кнопку */
+.auth-form__submit-button:hover {
+  background-color: var(--color-persian-indigo);
+  transition: var(--transition-base);
+}
+
+/* Hero-блок */
+.auth-hero {
+  display: grid;
+  grid-template-columns: auto;
+  min-height: 100vh;
+  align-items: center;
+  justify-items: center;
+  padding: 50px 20px;
+  background-color: var(--color-galactic-highway);
+}
+
+/* Изображение в hero-блоке */
+.auth-hero__to-do-list {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+

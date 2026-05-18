@@ -1,0 +1,101 @@
+/* Секция примеров мероприятий (контейнер) */
+.cards-examples__container {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: center;
+    max-width: 1721px;
+    padding: 20px;
+    margin: 0 auto;
+    background-color: var(--color-ice-effect);
+}
+
+/* Место для размещения карточек  */
+.cards-examples__card-place {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    column-gap: 50px;
+    max-width: 1500px;
+    padding: 20px;
+    margin: 0 auto;
+    background-color: var(--color-ice-effect);
+}
+
+/* Карточка мероприятия */
+.event-card {
+    display: grid;
+    grid-template-rows: repeat(7, auto);
+    justify-items: center;
+    row-gap: 15px;
+    padding: 20px;
+    background-color: var(--color-galactic-highway);
+    border-radius: 20px;
+}
+
+/* Заголовок карточки (название мероприятия) */
+.event-card__headline {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Организатор мероприятия */
+.event-card__organizer {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Блок категорий мероприятия */
+.event-card__categories {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    justify-items: center;
+    row-gap: 5px;
+    min-width: 70%;
+    background-color: var(--color-exodus-fruit);
+    padding: 10px;
+    border-radius: 15px;
+}
+
+/* Дата и время проведения */
+.event-card__datetime {
+    text-decoration: underline;
+}
+
+/* Место проведения */
+.event-card__location {
+    text-decoration: underline;
+}
+
+/* Метка "Волонтёров:" */
+.event-card__volunteers-label {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Блок с информацией о волонтёрах */
+.event-card__volunteers {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    justify-items: center;
+    row-gap: 5px;
+}
+
+/* Количество волонтёров (текущее/нужное) */
+.event-card__volunteers-count {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Кнопка карточки (Участвовать / Набор завершён) */
+.event-card__button {
+    color: var(--color-aphrodisiac);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Эффект при наведении на кнопку карточки */
+.event-card__button:hover {
+    background-color: var(--color-galactic-highway);
+}

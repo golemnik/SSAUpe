@@ -1,0 +1,90 @@
+/* Контейнер секции разработчиков */
+.developers-info {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: repeat(4, auto);
+  row-gap: 30px;
+  justify-items: center;
+  max-width: 1721px;
+  padding: 20px 10px;
+  margin: 0 auto;
+  background-color: var(--color-exodus-fruit);
+}
+
+/* Заголовок секции разработчиков */
+.developers-info__headline {
+  font-size: var(--font-size-h3);
+}
+
+/* Список разработчиков */
+.developers-info__list {
+  font-size: var(--font-size-h3);
+  /* Сброс маркеров списка */
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  /* Центрирование элементов списка */
+  text-align: center;
+}
+
+/* Элементы списка */
+.developers-info__list-item {
+  margin-bottom: 8px;
+}
+
+/* Год создания */
+.developers-info__time {
+  font-size: var(--font-size-h3);
+}
+
+/* Блок с кнопками */
+.developers-info__button-place {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: repeat(2, auto);
+  row-gap: 30px;
+  justify-items: center;
+}
+
+/* Кнопки (Общие стили) */
+
+/* Базовые стили для всех кнопок */
+.button {
+  text-align: center;
+  font-size: var(--font-size-h3);
+  border-radius: 20px;
+  /* Убираем подчёркивание у ссылок */
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Эффект при наведении на любую кнопку */
+.button:hover {
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+/* Кнопка "О системе" */
+
+.developers-info__sistem-button {
+  color: var(--color-galactic-highway);
+  background-color: var(--color-ice-effect);
+  border: 5px var(--color-galactic-highway) solid;
+  padding: 10px 20px;
+}
+
+.developers-info__sistem-button:hover {
+  background-color: var(--color-petit-four);
+}
+
+/* Кнопка "Вернуться на главную" */
+
+.developers-info__home-button {
+  color: var(--color-white);
+  background-color: var(--color-galactic-highway);
+  padding: 15px 25px;
+}
+
+.developers-info__home-button:hover {
+  background-color: var(--color-persian-indigo);
+}

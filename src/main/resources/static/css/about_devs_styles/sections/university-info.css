@@ -1,0 +1,34 @@
+/* Контейнер секции */
+.university-info {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: repeat(2, auto);
+  row-gap: 30px;
+  justify-items: center;
+  max-width: 1721px;
+  padding: 20px 10px;
+  margin: 0 auto;
+  background-color: var(--color-exodus-fruit);
+}
+
+/* Заголовок секции с иконками-звёздочками */
+.university-info__headline {
+  text-align: center;
+  font-size: var(--font-size-h3);
+}
+
+/* Добавляем звёздочку перед текстом */
+.university-info__headline::before {
+  content: "⭐️";
+}
+
+/* Добавляем звёздочку после текста */
+.university-info__headline::after {
+  content: "⭐️";
+}
+
+/* Текст секции */
+.university-info__text {
+  text-align: center;
+  font-size: var(--font-size-h3);
+}

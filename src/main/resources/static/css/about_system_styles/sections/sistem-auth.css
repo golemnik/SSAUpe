@@ -1,0 +1,50 @@
+/* Контейнер секции */
+.sistem-auth__container {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: left;
+    max-width: 1721px;
+    padding: 10px;
+    margin: 0 auto;
+    background-color: var(--color-galactic-highway);
+}
+
+/* Контейнер формы авторизации */
+.form-auth__container {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    justify-items: center;
+    row-gap: 30px;
+    font-size: var(--font-size-h4);
+    max-width: 1000px;
+    background-color: var(--color-exodus-fruit);
+    border-radius: 10px;
+    padding: 30px;
+}
+
+/* Контейнер регистрации волонтёра */
+.volonteer-reg__container {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    justify-items: center;
+    row-gap: 30px;
+    font-size: var(--font-size-h4);
+    max-width: 1000px;
+    background-color: var(--color-exodus-fruit);
+    border-radius: 10px;
+    padding: 30px;
+}
+
+/* Изображения в секции */
+.form-auth__auth-appearance {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.volonteer-reg__reg-appearance {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}

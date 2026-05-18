@@ -1,0 +1,10 @@
+.media-block__container {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: center;
+    max-width: 1721px;
+    padding: 20px;
+    margin: 0 auto;
+    background-color: var(--color-galactic-highway);
+}

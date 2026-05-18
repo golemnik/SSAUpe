@@ -1,0 +1,97 @@
+/* Фоновое затемнение при открытом меню */
+.menu-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    color: var(--color-exodus-fruit);
+}
+
+/* Класс для показа меню */
+.menu-dialog--open {
+    display: block;
+}
+
+/* Контейнер меню */
+.menu-dialog__container {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: left;
+    max-width: 800px;
+    margin: 5% auto;
+    background-color: var(--color-ice-effect);
+    padding: 30px;
+    border-radius: 16px;
+}
+
+/* Шапка меню: заголовок + кнопка закрытия */
+.menu-dialog__header {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 550px;
+    margin-bottom: 20px;
+}
+
+/* Кнопка закрытия (крестик) */
+.menu-dialog__close-button {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Линии крестика */
+.menu-dialog__close-line {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: var(--color-galactic-highway);
+    border-radius: 2px;
+}
+
+/* Первая линия (повёрнута на 45°) */
+.menu-dialog__close-line:first-child {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+/* Вторая линия (повёрнута на -45°) */
+.menu-dialog__close-line:last-child {
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Заголовок меню */
+.menu-dialog__headline {
+    color: var(--color-galactic-highway);
+}
+
+/* Навигация меню */
+.menu-dialog__nav {
+    min-width: 95%;
+    border: 2px var(--color-galactic-highway) solid;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Пункт меню */
+.menu-dialog__item {
+    text-decoration: underline;
+    margin-bottom: 10px;
+    margin-left: 30px;
+    font-size: var(--font-size-h4);
+}
+
+/* Ссылка в меню */
+.menu-dialog__link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.menu-dialog__link:hover {
+    text-decoration: underline;
+}

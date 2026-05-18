@@ -1,0 +1,51 @@
+/* Контейнер секции заявок волонтёров */
+.applications-section__container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, auto);
+    row-gap: 30px;
+    justify-items: center;
+    max-width: 1721px;
+    padding: 30px 20px;
+    margin: 0 auto;
+    background-color: var(--color-ice-effect);
+}
+
+/* Скроллбар для списка заявок */
+.applications-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Дорожка скроллбара */
+.applications-list::-webkit-scrollbar-track {
+    background: var(--color-shy-moment);
+    border-radius: 10px;
+}
+
+/* Бегунок скроллбара */
+.applications-list::-webkit-scrollbar-thumb {
+    background: var(--color-galactic-highway);
+    border-radius: 10px;
+}
+
+/* Заголовок секции заявок */
+.applications-section__headline {
+    text-align: center;
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-galactic-highway);
+}
+
+/* Сообщение о пустом списке заявок */
+.empty-applications-message {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, auto);
+    row-gap: 20px;
+    align-items: center;
+    justify-items: center;
+    border-radius: 20px;
+    padding: 20px;
+    font-size: var(--font-size-h4);
+    background-color: var(--color-galactic-highway);
+}

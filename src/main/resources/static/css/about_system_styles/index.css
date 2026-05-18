@@ -1,0 +1,46 @@
+@import url("./variables/fonts.css");
+@import url("./variables/colors.css");
+@import url("./variables/null.css");
+@import url("./variables/transition.css");
+
+@import url("./sections/header.css");
+@import url("./sections/menu-dialog.css");
+@import url("./sections/introduction.css");
+@import url("./sections/general-home-page.css");
+@import url("./sections/sistem-auth.css");
+@import url("./sections/organizer-work.css");
+@import url("./sections/volonteer-work.css");
+@import url("./sections/work-end.css");
+@import url("./sections/footer.css");
+
+
+/* Базовые стили шрифта с использованием переменных */
+body {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 2rem;
+    color: var(--color-white);
+    background-color: var(--color-galactic-highway);
+}
+
+.headline {
+    margin-block: 1.2rem;
+}
+
+.main__container {
+    display: grid;
+    grid-template-columns: auto;
+    justify-items: center;
+}
+
+container--blue-background {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: left;
+    max-width: 1721px;
+    padding: 10px;
+    margin: 0 auto;
+    background-color: var(--color-galactic-highway);
+}

@@ -1,0 +1,23 @@
+@import url("./variables/fonts.css");
+@import url("./variables/colors.css");
+@import url("./variables/null.css");
+@import url("./variables/transition.css");
+
+@import url("./sections/header.css");
+@import url("./sections/menu-dialog.css");
+@import url("./sections/hero.css");
+@import url("./sections/cards-examples.css");
+@import url("./sections/media-block.css");
+@import url("./sections/descr-of-capabilities.css");
+@import url("./sections/call-for-auth.css");
+@import url("./sections/footer.css");
+
+/* Базовые стили шрифта с использованием переменных */
+body {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-white);
+  background-color: var(--color-galactic-highway);
+}

@@ -1,0 +1,118 @@
+/* Контейнер шапки */
+.header__container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1721px;
+    padding: 20px;
+    margin: 0 auto;
+    background-color: var(--color-ice-effect);
+}
+
+/* Базовая кнопка */
+.button {
+    color: var(--color-white);
+    background-color: var(--color-galactic-highway);
+    cursor: pointer;
+    text-align: center;
+    border: none;
+}
+
+/* Эффект при наведении на любую кнопку */
+.button:hover {
+    transition: var(--transition-base);
+    background-color: var(--color-persian-indigo);
+}
+
+/* Левая секция контента (логотип + кнопки) */
+.header__content-group {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    column-gap: 30px;
+    align-items: center;
+}
+
+/* Кнопка "?" (справка) */
+.header__sistem-button {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: center;
+    width: 62px;
+    height: 60px;
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    border-radius: 15px;
+}
+
+/* Эффект при наведении на кнопку справки */
+.header__sistem-button:hover {
+    text-decoration: none;
+}
+
+/* Кнопка-бургер (меню) */
+.menu-button {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    background-color: var(--color-galactic-highway);
+    align-items: center;
+    justify-items: center;
+    width: 62px;
+    height: 60px;
+    border-radius: 10px;
+    padding-block: 5px;
+    border: none;
+}
+
+/* Полоски бургер-меню */
+.menu-button__line {
+    display: block;
+    width: 70%;
+    height: 6px;
+    background-color: var(--color-white);
+    border-radius: 2px;
+}
+
+/* Кнопка уведомлений (колокольчик) */
+.header__notifications-button {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: center;
+    width: 62px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+/* Кнопка редактирования профиля */
+.header__profile-button {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: center;
+    width: 62px;
+    height: 60px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* Эффект при наведении на кнопку профиля */
+.header__profile-button:hover {
+    text-decoration: none;
+}
+
+/* Кнопка "Выйти" */
+.header__logout-button {
+    min-width: 200px;
+    border-radius: 20px;
+    padding: 15px 10px;
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+}
+
+/* Эффект при наведении на кнопку "Выйти" */
+.header__logout-button:hover {
+    text-decoration: none;
+}
