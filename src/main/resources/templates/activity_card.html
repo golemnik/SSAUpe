@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="cardModal" id="activityCardModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 99999; align-items: center; justify-content: center; font-family: 'Roboto', sans-serif;">
+
+  <div style="background-color: #cceeff; width: 520px; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); overflow: hidden; position: relative; padding: 30px; display: flex; flex-direction: column; gap: 20px;">
+
+    <span id="closeCardModal" style="position: absolute; top: 15px; right: 25px; cursor: pointer; color: #5d3fd3; font-size: 38px; font-weight: bold; line-height: 1;" title="Назад">&times;</span>
+
+    <div style="text-align: center; color: #777; font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px;">Карточка мероприятия</div>
+
+    <h2 id="modalActivityTitle" style="color: #2b00aa; margin: 0; text-align: center; font-size: 28px; font-weight: bold; line-height: 1.3;">Название мероприятия</h2>
+
+    <p id="modalActivityDateTime" style="color: #4a90e2; margin: 0; text-align: center; font-size: 16px; font-weight: 500;">Дата и время проведения</p>
+
+    <div style="background-color: #2b00aa; color: #ffffff; padding: 25px; border-radius: 16px; text-align: center; font-size: 17px; line-height: 1.5; min-height: 120px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.2);">
+      <span id="modalActivityDescription">Описание отсутсвует</span>
+    </div>
+
+    <div style="text-align: center; color: #4a90e2; font-size: 16px;">
+      Необходимое количество волонтёров:
+      <div style="display: block; margin-top: 5px;">
+        <div id="modalActivityVolunteers" style="font-size: 42px; font-weight: bold; color: #2b00aa; display: inline-block; padding: 0 20px;">0</div>
+      </div>
+      <div style="width: 140px; height: 4px; background-color: #5d3fd3; margin: 8px auto 0 auto;"></div>
+    </div>
+
+    <div id="modalActivityCategories" style="display: flex; gap: 12px; justify-content: center; margin-top: 5px;">
+      <span style="background: #5d3fd3; color: white; padding: 6px 16px; border-radius: 20px; font-size: 14px;" id="tagFormat">Очный</span>
+      <span style="background: #5d3fd3; color: white; padding: 6px 16px; border-radius: 20px; font-size: 14px;" id="tagDirection">Общее</span>
+    </div>
+
+    <div style="text-align: center; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+
+      <button id="modalParticipateBtn" style="background-color: #2b00aa; color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 15px rgba(43,0,170,0.2);">Участвовать</button>
+
+      <div id="modalApplicationStatusBlock" style="display: none; padding: 12px; border-radius: 16px; background-color: #e6f2ff; border: 2px dashed #2b00aa;">
+        <span style="color: #2b00aa; font-size: 15px; display: block;">Статус вашей заявки:</span>
+        <span id="modalApplicationStatusValue" style="font-size: 20px; font-weight: bold; color: #5d3fd3; display: block; margin-top: 4px;">На рассмотрении</span>
+
+        <button id="modalCancelApplyBtn" style="margin-top: 10px; background-color: #ff4d4d; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; transition: transform 0.1s;">Отменить заявку</button>
+      </div>
+
+      <span id="modalClosedMessage" style="color: #ff4d4d; font-size: 16px; font-weight: bold; display: none; margin-top: 5px;">Набор участников окончен</span>
+    </div>
+  </div>
+</div>
+</html>

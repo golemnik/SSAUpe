@@ -12,161 +12,353 @@
     <link rel="shortcut icon" href="/favicon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="AboutTheDevelopers" />
+
+    <style>
+        .reg-form__error-message {
+            color: #e74c3c !important;
+            font-size: 16px !important;
+            font-weight: 500;
+            margin-top: 5px;
+            display: block;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-text-fill-color: #333 !important;
+            font-size: 16px !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
 </head>
 
 <body>
-    <section class="reg-layout">
-        <div class="reg-layout__container container">
+<section class="reg-layout">
+    <div class="reg-layout__container container">
 
-            <!-- Шапка -->
-            <div class="reg-card__header">
-                <div class="reg-card__logo logo">
-                    <img src="/images/logo.png" alt="Volunteering" width="200" height="50" />
-                </div>
-                <a th:href="@{home/about_devs}" id="sistemButton" class="reg-card__sistem-button button">?</a>
+        <div class="reg-card__header">
+            <div class="reg-card__logo logo">
+                <img src="/images/logo.png" alt="Volunteering" width="200" height="50" />
             </div>
-
-            <!-- Заголовок и ссылка на авторизацию -->
-            <div class="reg-card__body">
-                <h1 class="reg-card__headline headline">Регистрация</h1>
-                <p class="reg-card__text">Уже есть аккаунт? <a th:href="@{login}" class="reg-card__auth-link">Авторизоваться</a></p>
-            </div>
-
-            <!-- Форма регистрации -->
-            <form class="reg-form" th:action="@{registration}" th:object="${userForm}"  method="POST" enctype="multipart/form-data" novalidate>
-
-                <!-- Блок фотографии профиля -->
-                <div class="reg-form__photo-block">
-                    <div class="reg-form__photo-area">
-                        <span class="reg-form__photo-title">Фотография профиля</span>
-                        <span class="reg-form__photo-hint">200×200 – 1024×1024 (JPEG, PNG, WEBP)</span>
-                    </div>
-                    <div class="reg-form__photo-upload">
-                        <input type="file" id="avatar" name="profile_picture" accept="image/jpeg,image/png,image/webp" class="reg-form__photo-input" />
-                        <span class="reg-form__photo-button">Загрузить</span>
-                    </div>
-                </div>
-
-                <!-- Строка 1: ФИО (левая часть) + Логин, Пароль, Повтор пароля (правая часть) -->
-                <div class="reg-form__row reg-form__row--first">
-                    <!-- Левая часть: Логин, Пароль, Повтор пароля -->
-                    <div class="reg-form__column reg-form__column--auth">
-                        <div class="reg-form__group reg-form__group--error">
-                            <label for="login" class="reg-form__label">Логин:</label>
-                            <input type="text" id="login" name="username" class="reg-form__input reg-form__input--error"
-                                   minlength="3" maxlength="20" required placeholder="IvanSvistun" />
-                            <div class="reg-form__error-message"></div>
-                        </div>
-                        <div class="reg-form__group">
-                            <label for="password" class="reg-form__label">Пароль:</label>
-                            <input type="password" id="password" name="password" class="reg-form__input" 
-                                   minlength="8" maxlength="25" required placeholder="••••••••••" />
-                        </div>
-                        <div class="reg-form__group">
-                            <label for="password_confirm" class="reg-form__label">Повтор пароля:</label>
-                            <input type="password" id="password_confirm" name="passwordConfirm" class="reg-form__input"
-                                   required placeholder="Повторите пароль" />
-                        </div>
-                    </div>
-
-                    <!-- Правая часть: ФИО -->
-                    <div class="reg-form__column reg-form__column--fio">
-                        <div class="reg-form__group">
-                            <label for="lastname" class="reg-form__label">Фамилия:</label>
-                            <input type="text" id="lastname" name="lastName" class="reg-form__input"
-                                   minlength="2" maxlength="40" placeholder="Иванов" />
-                        </div>
-                        <div class="reg-form__group">
-                            <label for="firstname" class="reg-form__label">Имя:</label>
-                            <input type="text" id="firstname" name="firstName" class="reg-form__input"
-                                   minlength="2" maxlength="40" placeholder="Иван" />
-                        </div>
-                        <div class="reg-form__group">
-                            <label for="patronymic" class="reg-form__label">Отчество:</label>
-                            <input type="text" id="patronymic" name="middleName" class="reg-form__input"
-                                   minlength="2" maxlength="40" placeholder="Иванович" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Строка 2: Номер волонтёрской книжки (на всю ширину) -->
-                <div class="reg-form__row reg-form__row--full">
-                    <div class="reg-form__group reg-form__group--full">
-                        <label for="volunteer_id" class="reg-form__label">Номер волонтёрской книжки:</label>
-                        <input type="text" id="volunteer_id" name="volunteerBookId" class="reg-form__input"
-                               maxlength="20" placeholder="ВК-1234567890" />
-                    </div>
-                </div>
-
-                <!-- Строка 3: Дата рождения, опыт участия (левая часть) + Почта, телефон, доп язык (правая часть) -->
-                <div class="reg-form__row reg-form__row--third">
-                    <!-- Левая часть: Дата рождения + Опыт участия -->
-                    <div class="reg-form__column reg-form__column--personal">
-                        <div class="reg-form__group">
-                            <label for="birthdate" class="reg-form__label">Дата рождения:</label>
-                            <input type="date" id="birthdate" name="birthDate" class="reg-form__input reg-form__birthdate" />
-                        </div>
-                        <div class="reg-form__group">
-                            <label class="reg-form__label">Опыт участия:</label>
-                            <div class="reg-form__checkboxes">
-                                <label class="reg-form__checkbox">
-                                    <input type="checkbox" name="experiences" value="SPORTS" checked />
-                                    <span>Спортивные мероприятия</span>
-                                </label>
-                                <label class="reg-form__checkbox">
-                                    <input type="checkbox" name="experiences" value="CULTURAL" />
-                                    <span>Культурные мероприятия</span>
-                                </label>
-                                <label class="reg-form__checkbox">
-                                    <input type="checkbox" name="experiences" value="EDUCATIONAL" />
-                                    <span>Образовательные мероприятия</span>
-                                </label>
-                                <label class="reg-form__checkbox">
-                                    <input type="checkbox" name="experiences" value="SOCIAL" />
-                                    <span>Социальные мероприятия</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Правая часть: Почта, Телефон, Дополнительный язык -->
-                    <div class="reg-form__column reg-form__column--contacts">
-                        <div class="reg-form__group">
-                            <label for="email" class="reg-form__label">Электронная почта:</label>
-                            <input type="email" id="email" name="email" class="reg-form__input" 
-                                   minlength="6" maxlength="54" required placeholder="ivan@example.com" />
-                        </div>
-                        <div class="reg-form__group">
-                            <label for="phone" class="reg-form__label">Номер телефона:</label>
-                            <input type="tel" id="phone" name="phoneNumber" class="reg-form__input"
-                                   maxlength="11" placeholder="+7 999 123-45-67" />
-                        </div>
-                        <div class="reg-form__group">
-                            <label for="additional_lang" class="reg-form__label">Дополнительный язык:</label>
-                            <select id="additional_lang" name="additionalLanguage" class="reg-form__select">
-                                <option value="">Не выбран</option>
-                                <option value="english">Английский</option>
-                                <option value="german">Немецкий</option>
-                                <option value="french">Французский</option>
-                                <option value="spanish">Испанский</option>
-                                <option value="chinese">Китайский</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Строка 4: Кнопка регистрации (на всю ширину, по центру) -->
-                <div class="reg-form__row reg-form__row--submit">
-                    <button type="submit" class="reg-form__submit-button">
-                        Зарегистрироваться
-                    </button>
-                </div>
-
-            </form>
+            <a th:href="@{home/about_devs}" id="sistemButton" class="reg-card__sistem-button button">?</a>
         </div>
-    </section>
-    
-    <script src=""></script>
+
+        <div class="reg-card__body">
+            <h1 class="reg-card__headline headline">Регистрация</h1>
+            <p class="reg-card__text">Уже есть аккаунт? <a th:href="@{login}" class="reg-card__auth-link">Авторизоваться</a></p>
+        </div>
+
+        <form class="reg-form" id="registrationForm" th:action="@{registration}" th:object="${userForm}" method="POST" enctype="multipart/form-data" novalidate>
+
+            <div class="reg-form__photo-block">
+                <div class="reg-form__photo-area">
+                    <span class="reg-form__photo-title">Фотография профиля</span>
+                    <span class="reg-form__photo-hint">200×200 – 1024×1024 (JPEG, PNG, WEBP)</span>
+                </div>
+                <div class="reg-form__photo-upload">
+                    <input type="file" id="avatar" name="profile_picture" accept="image/jpeg,image/png,image/webp" class="reg-form__photo-input" />
+                    <span class="reg-form__photo-button">Загрузить</span>
+                </div>
+            </div>
+
+            <div class="reg-form__row reg-form__row--first">
+                <div class="reg-form__column reg-form__column--auth">
+
+                    <div class="reg-form__group" th:classappend="${#fields.hasErrors('username')} ? 'reg-form__group--error'">
+                        <label for="login" class="reg-form__label">Логин:</label>
+                        <input type="text" id="login" th:field="*{username}" class="reg-form__input"
+                               th:classappend="${#fields.hasErrors('username')} ? 'reg-form__input--error'"
+                               minlength="3" maxlength="20" required placeholder="IvanSvistun" />
+                        <div class="reg-form__error-message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                        <div class="reg-form__error-message js-error" id="error-login"></div>
+                    </div>
+
+                    <div class="reg-form__group">
+                        <label for="password" class="reg-form__label">Пароль:</label>
+                        <input type="password" id="password" th:field="*{password}" class="reg-form__input"
+                               minlength="8" maxlength="25" required placeholder="••••••••••" />
+                        <div class="reg-form__error-message js-error" id="error-password"></div>
+                    </div>
+
+                    <div class="reg-form__group">
+                        <label for="password_confirm" class="reg-form__label">Повтор пароля:</label>
+                        <input type="password" id="password_confirm" th:field="*{passwordConfirm}" class="reg-form__input"
+                               maxlength="25" required placeholder="Повторите пароль" />
+                        <div class="reg-form__error-message js-error" id="error-password_confirm"></div>
+                    </div>
+                </div>
+
+                <div class="reg-form__column reg-form__column--fio">
+                    <div class="reg-form__group">
+                        <label for="lastname" class="reg-form__label">Фамилия:</label>
+                        <input type="text" id="lastname" th:field="*{lastName}" class="reg-form__input"
+                               minlength="2" maxlength="40" placeholder="Иванов" required />
+                        <div class="reg-form__error-message js-error" id="error-lastname"></div>
+                    </div>
+                    <div class="reg-form__group">
+                        <label for="firstname" class="reg-form__label">Имя:</label>
+                        <input type="text" id="firstname" th:field="*{firstName}" class="reg-form__input"
+                               minlength="2" maxlength="40" placeholder="Иван" required />
+                        <div class="reg-form__error-message js-error" id="error-firstname"></div>
+                    </div>
+                    <div class="reg-form__group">
+                        <label for="patronymic" class="reg-form__label">Отчество:</label>
+                        <input type="text" id="patronymic" th:field="*{middleName}" class="reg-form__input"
+                               minlength="2" maxlength="40" placeholder="Иванович" />
+                        <div class="reg-form__error-message js-error" id="error-patronymic"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reg-form__row reg-form__row--full">
+                <div class="reg-form__group reg-form__group--full">
+                    <label for="volunteer_id" class="reg-form__label">Номер волонтёрской книжки:</label>
+                    <input type="text" id="volunteer_id" th:field="*{volunteerBookId}" class="reg-form__input"
+                           maxlength="13" placeholder="ВК-1234567890" required />
+                    <div class="reg-form__error-message js-error" id="error-volunteer_id"></div>
+                </div>
+            </div>
+
+            <div class="reg-form__row reg-form__row--third">
+                <div class="reg-form__column reg-form__column--personal">
+                    <div class="reg-form__group">
+                        <label for="birthdate" class="reg-form__label">Дата рождения:</label>
+                        <input type="date" id="birthdate" th:field="*{birthDate}" class="reg-form__input reg-form__birthdate" required />
+                        <div class="reg-form__error-message js-error" id="error-birthdate"></div>
+                    </div>
+                    <div class="reg-form__group">
+                        <label class="reg-form__label">Опыт участия:</label>
+                        <div class="reg-form__checkboxes">
+                            <label class="reg-form__checkbox">
+                                <input type="checkbox" name="experiences" value="SPORTS" checked />
+                                <span>Спортивные мероприятия</span>
+                            </label>
+                            <label class="reg-form__checkbox">
+                                <input type="checkbox" name="experiences" value="CULTURAL" />
+                                <span>Культурные мероприятия</span>
+                            </label>
+                            <label class="reg-form__checkbox">
+                                <input type="checkbox" name="experiences" value="EDUCATIONAL" />
+                                <span>Образовательные мероприятия</span>
+                            </label>
+                            <label class="reg-form__checkbox">
+                                <input type="checkbox" name="experiences" value="SOCIAL" />
+                                <span>Социальные мероприятия</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reg-form__column reg-form__column--contacts">
+                    <div class="reg-form__group">
+                        <label for="email" class="reg-form__label">Электронная почта:</label>
+                        <input type="email" id="email" th:field="*{email}" class="reg-form__input"
+                               minlength="6" maxlength="54" required placeholder="ivan@example.com" />
+                        <div class="reg-form__error-message js-error" id="error-email"></div>
+                    </div>
+
+                    <div class="reg-form__group">
+                        <label for="phone" class="reg-form__label">Номер телефона:</label>
+                        <input type="tel" id="phone" th:field="*{phoneNumber}" class="reg-form__input"
+                               maxlength="12" placeholder="+79991234567" required />
+                        <div class="reg-form__error-message js-error" id="error-phone"></div>
+                    </div>
+
+                    <div class="reg-form__group">
+                        <label for="additional_lang" class="reg-form__label">Дополнительный язык:</label>
+                        <select id="additional_lang" th:field="*{additionalLanguage}" class="reg-form__select">
+                            <option value="">Не выбран</option>
+                            <option value="english">Английский</option>
+                            <option value="german">Немецкий</option>
+                            <option value="french">Французский</option>
+                            <option value="spanish">Испанский</option>
+                            <option value="chinese">Китайский</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reg-form__row reg-form__row--submit">
+                <button type="submit" class="reg-form__submit-button">
+                    Зарегистрироваться
+                </button>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+<script>
+    const volunteerInput = document.getElementById('volunteer_id');
+    const phoneInput = document.getElementById('phone');
+    const fioInputs = [document.getElementById('lastname'), document.getElementById('firstname'), document.getElementById('patronymic')];
+
+    const volunteerPrefix = 'ВК-';
+    const phonePrefix = '+';
+
+    // Функция фокуса для книжки
+    volunteerInput.addEventListener('focus', function() {
+        if (this.value === '') {
+            this.value = volunteerPrefix;
+        }
+    });
+
+    // Функция выхода из поля для книжки (если остался только префикс — очищаем)
+    volunteerInput.addEventListener('blur', function() {
+        if (this.value === volunteerPrefix) {
+            this.value = '';
+        }
+    });
+
+    // Функция фокуса для телефона
+    phoneInput.addEventListener('focus', function() {
+        if (this.value === '') {
+            this.value = phonePrefix;
+        }
+    });
+
+    // Функция выхода из поля для телефона
+    phoneInput.addEventListener('blur', function() {
+        if (this.value === phonePrefix) {
+            this.value = '';
+        }
+    });
+
+
+    // 1. ФИО: Только буквы и дефис
+    fioInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ-]/g, '');
+        });
+    });
+
+    // 2. ТЕЛЕФОН: Фильтрация ввода
+    phoneInput.addEventListener('input', function() {
+        // Если поле пустое (например, пользователь стер всё выделением), прерываем, фокус/блюр разберутся
+        if (this.value === '') return;
+
+        if (!this.value.startsWith(phonePrefix)) {
+            this.value = phonePrefix;
+            return;
+        }
+        const digits = this.value.substring(phonePrefix.length).replace(/\D/g, '');
+        this.value = phonePrefix + digits;
+    });
+
+    phoneInput.addEventListener('keydown', function(e) {
+        if (this.selectionStart < phonePrefix.length && (e.key === 'Backspace' || e.key === 'Delete')) {
+            e.preventDefault();
+        }
+    });
+
+    // 3. ВОЛОНТЁРСКАЯ КНИЖКА: Фильтрация ввода
+    volunteerInput.addEventListener('input', function() {
+        if (this.value === '') return;
+
+        if (!this.value.startsWith(volunteerPrefix)) {
+            this.value = volunteerPrefix;
+            return;
+        }
+        const digitsPart = this.value.substring(volunteerPrefix.length).replace(/\D/g, '');
+        this.value = volunteerPrefix + digitsPart;
+    });
+
+    volunteerInput.addEventListener('keydown', function(e) {
+        if (this.selectionStart < volunteerPrefix.length && (e.key === 'Backspace' || e.key === 'Delete')) {
+            e.preventDefault();
+        }
+    });
+
+
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        let isValid = true;
+
+        // Очистка предыдущих ошибок
+        document.querySelectorAll('.js-error').forEach(el => el.textContent = '');
+        document.querySelectorAll('.reg-form__input').forEach(el => {
+            el.classList.remove('reg-form__input--error');
+            const group = el.closest('.reg-form__group');
+            if(group) group.classList.remove('reg-form__group--error');
+        });
+
+        // Функция отображения ошибок
+        let showError = function(inputId, message) {
+            const input = document.getElementById(inputId);
+            const group = input.closest('.reg-form__group');
+            const errorDiv = document.getElementById('error-' + inputId);
+
+            if (input && group && errorDiv) {
+                input.classList.add('reg-form__input--error');
+                group.classList.add('reg-form__group--error');
+                errorDiv.textContent = message;
+            }
+            isValid = false;
+        };
+
+        // 1. Проверка ФИО
+        const lastname = document.getElementById('lastname').value.trim();
+        if (lastname === '') showError('lastname', 'Фамилия не может быть пустой');
+
+        const firstname = document.getElementById('firstname').value.trim();
+        if (firstname === '') showError('firstname', 'Имя не может быть пустым');
+
+        // 2. Проверка Логина и Пароля
+        const login = document.getElementById('login').value.trim();
+        if (login === '') {
+            showError('login', 'Логин не может быть пустым');
+        } else if (login.length < 3 || login.length > 20) {
+            showError('login', 'Логин должен быть от 3 до 20 символов');
+        }
+
+        const password = document.getElementById('password').value;
+        if (password === '') {
+            showError('password', 'Пароль не может быть пустым');
+        } else if (password.length < 8 || password.length > 25) {
+            showError('password', 'Пароль должен быть от 8 до 25 символов');
+        }
+
+        const passwordConfirm = document.getElementById('password_confirm').value;
+        if (password !== '' && password !== passwordConfirm) {
+            showError('password_confirm', 'Пароли не совпадают');
+        }
+
+        // 3. Проверка Даты рождения
+        const birthdate = document.getElementById('birthdate').value;
+        if (birthdate === '') {
+            showError('birthdate', 'Укажите дату рождения');
+        }
+
+        // 4. Проверка Телефона (Обязательное + длина)
+        const phone = phoneInput.value.trim();
+        if (phone === '' || phone === phonePrefix) {
+            showError('phone', 'Номер телефона не может быть пустым');
+        } else if (!/^\+\d{11}$/.test(phone)) {
+            showError('phone', 'Телефон должен содержать ровно 11 цифр после знака "+" (например: +79991234567)');
+        }
+
+        // 5. Проверка Email
+        const email = document.getElementById('email').value.trim();
+        if (email === '') {
+            showError('email', 'Электронная почта не может быть пустой');
+        } else if (!email.includes('@')) {
+            showError('email', 'Электронная почта должна содержать символ "@"');
+        }
+
+        // 6. Проверка волонтёрской книжки (Обязательное + длина)
+        const volunteerId = volunteerInput.value.trim();
+        if (volunteerId === '' || volunteerId === volunteerPrefix) {
+            showError('volunteer_id', 'Номер волонтёрской книжки не может быть пустым');
+        } else if (volunteerId.length !== 13) {
+            showError('volunteer_id', 'После префикса "ВК-" должно быть введено ровно 10 цифр');
+        }
+
+        // Отмена отправки формы при наличии ошибок
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+</script>
 </body>
 
 </html>

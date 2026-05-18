@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Редактирование профиля</title>
+    <meta name="description" content="На этой странице представлено редактирование профиля волонтёра." />
+
+    <link th:href="@{/css/profile_editor_styles/index.css}" rel="stylesheet" />
+    <link rel="icon" type="image/png" th:href="@{/favicon/favicon-96x96.png}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon/favicon.svg}" />
+    <link rel="shortcut icon" th:href="@{/favicon/favicon.ico}" />
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/favicon/apple-touch-icon.png}" />
+    <meta name="apple-mobile-web-app-title" content="EditProfile" />
+
+    <style>
+        /* Оформление блоков вывода ошибок валидации */
+        .profile-form__error-message {
+            color: #e74c3c !important;
+            font-size: 13px !important;
+            font-weight: 500;
+            margin-top: 5px;
+            display: block;
+        }
+        .profile-form__input--error {
+            border: 2px solid #e74c3c !important;
+        }
+
+        /* Сброс стилей браузера при автозаполнении полей */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 16px !important;
+            -webkit-text-fill-color: #333 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+</head>
+
+<body>
+<section class="profile-layout">
+    <div class="profile-layout__container container">
+
+        <div class="profile-card__header">
+            <div class="profile-card__logo logo">
+                <img src="/images/logo.png" alt="Volunteering" width="200" height="50" />
+            </div>
+            <a th:href="@{/home/about_system}" id="sistemButton" class="profile-card__sistem-button button">?</a>
+        </div>
+
+        <div class="profile-card__body">
+            <h1 class="profile-card__headline headline">Редактирование профиля</h1>
+        </div>
+
+        <form class="profile-form" id="profileForm" th:action="@{/profile_edit}" th:object="${userForm}" method="POST" enctype="multipart/form-data" novalidate>
+
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="profile-form__photo-block">
+                <div class="profile-form__photo-area">
+                    <span class="profile-form__photo-title">Фотография профиля</span>
+                    <span class="profile-form__photo-hint">200×200 – 1024×1024 (JPEG, PNG, WEBP)</span>
+                </div>
+                <div class="profile-form__photo-upload">
+                    <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/webp"
+                           class="profile-form__photo-input" />
+                    <span class="profile-form__photo-button">Загрузить</span>
+                </div>
+            </div>
+
+            <div class="profile-form__row profile-form__row--first">
+                <div class="profile-form__column profile-form__column--auth">
+                    <div class="profile-form__group">
+                        <label for="login" class="profile-form__label">Логин:</label>
+                        <input type="text" id="login" th:field="*{username}"
+                               class="profile-form__input" minlength="3" maxlength="20"
+                               required readonly style="background-color: #f0f8ff; cursor: not-allowed; color: #555;" />
+                        <div class="profile-form__error-message js-error" id="error-login"></div>
+                    </div>
+                    <div class="profile-form__group">
+                        <label for="password" class="profile-form__label">Пароль:</label>
+                        <input type="password" id="password" th:field="*{password}" class="profile-form__input"
+                               minlength="8" maxlength="25" placeholder="••••••••••" />
+                        <div class="profile-form__error-message js-error" id="error-password"></div>
+                    </div>
+                    <div class="profile-form__group">
+                        <label for="password_confirm" class="profile-form__label">Повтор пароля:</label>
+                        <input type="password" id="password_confirm" th:field="*{passwordConfirm}"
+                               class="profile-form__input" placeholder="Повторите пароль" />
+                        <div class="profile-form__error-message js-error" id="error-password_confirm"></div>
+                    </div>
+                </div>
+
+                <div class="profile-form__column profile-form__column--fio">
+                    <div class="profile-form__group">
+                        <label for="lastname" class="profile-form__label">Фамилия:</label>
+                        <input type="text" id="lastname" th:field="*{lastName}" class="profile-form__input" minlength="2"
+                               maxlength="40" placeholder="Иванов" />
+                        <div class="profile-form__error-message js-error" id="error-lastname"></div>
+                    </div>
+                    <div class="profile-form__group">
+                        <label for="firstname" class="profile-form__label">Имя:</label>
+                        <input type="text" id="firstname" th:field="*{firstName}" class="profile-form__input" minlength="2"
+                               maxlength="40" placeholder="Иван" />
+                        <div class="profile-form__error-message js-error" id="error-firstname"></div>
+                    </div>
+                    <div class="profile-form__group">
+                        <label for="patronymic" class="profile-form__label">Отчество:</label>
+                        <input type="text" id="patronymic" th:field="*{middleName}" class="profile-form__input"
+                               minlength="2" maxlength="40" placeholder="Иванович" />
+                        <div class="profile-form__error-message js-error" id="error-patronymic"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-form__row profile-form__row--full">
+                <div class="profile-form__group profile-form__group--full">
+                    <label for="volunteer_id" class="profile-form__label">Номер волонтёрской книжки:</label>
+                    <input type="text" id="volunteer_id" th:field="*{volunteerBookId}" class="profile-form__input"
+                           maxlength="13" placeholder="ВК-1234567890" />
+                    <div class="profile-form__error-message js-error" id="error-volunteer_id"></div>
+                </div>
+            </div>
+
+            <div class="profile-form__row profile-form__row--third">
+                <div class="profile-form__column profile-form__column--personal">
+                    <div class="profile-form__group">
+                        <label for="birthdate" class="profile-form__label">Дата рождения:</label>
+                        <input type="date" id="birthdate" name="birthDate"
+                               th:value="${userForm.birthDate} ? ${#temporals.format(userForm.birthDate, 'yyyy-MM-dd')} : ''"
+                               class="profile-form__input profile-form__birthdate" />
+                        <div class="profile-form__error-message js-error" id="error-birthdate"></div>
+                    </div>
+                    <div class="profile-form__group">
+                        <label class="profile-form__label">Опыт участия:</label>
+                        <div class="profile-form__checkboxes">
+                            <label class="profile-form__checkbox">
+                                <input type="checkbox" name="experiences" value="SPORTS"
+                                       th:checked="${userForm.experiences != null && #sets.contains(userForm.experiences, T(com.ssau.project.ssaupe.model.ParticipationExperience).SPORTS)}" />
+                                <span>Спортивные мероприятия</span>
+                            </label>
+                            <label class="profile-form__checkbox">
+                                <input type="checkbox" name="experiences" value="CULTURAL"
+                                       th:checked="${userForm.experiences != null && #sets.contains(userForm.experiences, T(com.ssau.project.ssaupe.model.ParticipationExperience).CULTURAL)}" />
+                                <span>Культурные мероприятия</span>
+                            </label>
+                            <label class="profile-form__checkbox">
+                                <input type="checkbox" name="experiences" value="EDUCATIONAL"
+                                       th:checked="${userForm.experiences != null && #sets.contains(userForm.experiences, T(com.ssau.project.ssaupe.model.ParticipationExperience).EDUCATIONAL)}" />
+                                <span>Образовательные мероприятия</span>
+                            </label>
+                            <label class="profile-form__checkbox">
+                                <input type="checkbox" name="experiences" value="SOCIAL"
+                                       th:checked="${userForm.experiences != null && #sets.contains(userForm.experiences, T(com.ssau.project.ssaupe.model.ParticipationExperience).SOCIAL)}" />
+                                <span>Социальные мероприятия</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-form__column profile-form__column--contacts">
+                    <div class="profile-form__group">
+                        <label for="email" class="profile-form__label">Электронная почта:</label>
+                        <input type="email" id="email" th:field="*{email}" class="profile-form__input" minlength="6"
+                               maxlength="54" required placeholder="ivan@example.com" />
+                        <div class="profile-form__error-message js-error" id="error-email"></div>
+                    </div>
+                    <div class="profile-form__group">
+                        <label for="phone" class="profile-form__label">Номер телефона:</label>
+                        <input type="tel" id="phone" th:field="*{phoneNumber}" class="profile-form__input" maxlength="15"
+                               placeholder="+79991234567" />
+                        <div class="profile-form__error-message js-error" id="error-phone"></div>
+                    </div>
+                    <div class="profile-form__group">
+                        <label for="additional_lang" class="profile-form__label">Дополнительный язык:</label>
+                        <select id="additional_lang" th:field="*{additionalLanguage}" class="profile-form__select">
+                            <option value="">Не выбран</option>
+                            <option value="english">Английский</option>
+                            <option value="german">Немецкий</option>
+                            <option value="french">Французский</option>
+                            <option value="spanish">Испанский</option>
+                            <option value="chinese">Китайский</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-form__row profile-form__row--submit">
+                <button type="submit" class="profile-form__submit-button">
+                    Сохранить изменения
+                </button>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+<script>
+    const volunteerInput = document.getElementById('volunteer_id');
+    const phoneInput = document.getElementById('phone');
+    const fioInputs = [document.getElementById('lastname'), document.getElementById('firstname'), document.getElementById('patronymic')];
+
+    const volunteerPrefix = 'ВК-';
+    const phonePrefix = '+'; // Только знак плюс, без автоматической подстановки 7
+
+    // Поведение префиксов при фокусе на полях
+    volunteerInput.addEventListener('focus', function() {
+        if (this.value === '') this.value = volunteerPrefix;
+    });
+    volunteerInput.addEventListener('blur', function() {
+        if (this.value === volunteerPrefix) this.value = '';
+    });
+    phoneInput.addEventListener('focus', function() {
+        if (this.value === '') this.value = phonePrefix;
+    });
+    phoneInput.addEventListener('blur', function() {
+        if (this.value === phonePrefix) this.value = '';
+    });
+
+    // Блокировка ввода любых символов кроме букв и дефиса в ФИО
+    fioInputs.forEach(input => {
+        if(input) {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ-]/g, '');
+            });
+        }
+    });
+
+    // Динамическая маска телефона: оставляет плюс на месте и пропускает любые коды стран (только цифры)
+    phoneInput.addEventListener('input', function() {
+        if (this.value === '') return;
+        if (!this.value.startsWith(phonePrefix)) {
+            this.value = phonePrefix;
+            return;
+        }
+        const digits = this.value.substring(phonePrefix.length).replace(/\D/g, '');
+        this.value = phonePrefix + digits;
+    });
+
+    // Динамическая маска для номера волонтерской книжки (ВК-ХХХХХХХХХХ)
+    volunteerInput.addEventListener('input', function() {
+        if (this.value === '') return;
+        if (!this.value.startsWith(volunteerPrefix)) {
+            this.value = volunteerPrefix;
+            return;
+        }
+        const digitsPart = this.value.substring(volunteerPrefix.length).replace(/\D/g, '');
+        this.value = volunteerPrefix + digitsPart;
+    });
+
+    // Комплексная проверка полей перед отправкой POST-запроса в контроллер
+    document.getElementById('profileForm').addEventListener('submit', function(event) {
+        let isValid = true;
+
+        // Сброс старых классов ошибок
+        document.querySelectorAll('.js-error').forEach(el => el.textContent = '');
+        document.querySelectorAll('.profile-form__input').forEach(el => el.classList.remove('profile-form__input--error'));
+
+        let showError = function(inputId, message) {
+            const input = document.getElementById(inputId);
+            const errorDiv = document.getElementById('error-' + inputId);
+            if (input && errorDiv) {
+                input.classList.add('profile-form__input--error');
+                errorDiv.textContent = message;
+            }
+            isValid = false;
+        };
+
+        // Проверка ФИО
+        if (document.getElementById('lastname').value.trim() === '') showError('lastname', 'Фамилия не может быть пустой');
+        if (document.getElementById('firstname').value.trim() === '') showError('firstname', 'Имя не может быть пустым');
+
+        // Проверка паролей (проверяется только если поле не пустое)
+        const password = document.getElementById('password').value;
+        if (password.length > 0) {
+            if (password.length < 8 || password.length > 25) {
+                showError('password', 'Пароль должен быть от 8 до 25 символов');
+            }
+            const passwordConfirm = document.getElementById('password_confirm').value;
+            if (password !== passwordConfirm) {
+                showError('password_confirm', 'Пароли не совпадают');
+            }
+        }
+
+        // Проверка даты рождения
+        if (document.getElementById('birthdate').value === '') showError('birthdate', 'Укажите дату рождения');
+
+        // Проверка телефона
+        const phone = phoneInput.value.trim();
+        if (phone === '' || phone === phonePrefix) {
+            showError('phone', 'Номер телефона не может быть пустым');
+        } else if (!/^\+\d{10,14}$/.test(phone)) {
+            showError('phone', 'Неверный формат номера телефона (например, +79991234567)');
+        }
+
+        // Проверка почты
+        const email = document.getElementById('email').value.trim();
+        if (email === '') {
+            showError('email', 'Электронная почта не может быть пустой');
+        } else if (!email.includes('@')) {
+            showError('email', 'Электронная почта должна содержать "@"');
+        }
+
+        // Проверка волонтерской книжки
+        const volunteerId = volunteerInput.value.trim();
+        if (volunteerId === '' || volunteerId === volunteerPrefix) {
+            showError('volunteer_id', 'Номер книжки не может быть пустым');
+        } else if (volunteerId.length !== 13) {
+            showError('volunteer_id', 'После "ВК-" должно идти ровно 10 цифр');
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Предотвращаем отправку формы при ошибках
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+INSERT INTO public.application (id, created_at, status, activity_id, volunteer_id) VALUES (1::integer, '2026-05-18 23:14:09.000000'::timestamp(6), 'PENDING'::varchar(45), 1::integer, 1::bigint)

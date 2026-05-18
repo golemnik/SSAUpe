@@ -1,0 +1,16 @@
+@import url("variables/fonts.css");
+@import url("variables/colors.css");
+@import url("variables/null.css");
+@import url("variables/transition.css");
+
+@import url("sections/profile-layout.css");
+
+/* Базовые стили шрифта с использованием переменных */
+body {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-galactic-highway);
+  background-color: var(--color-ice-effect);
+}

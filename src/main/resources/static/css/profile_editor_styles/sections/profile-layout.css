@@ -1,0 +1,279 @@
+/* Основной контейнер (Grid) */
+.profile-layout__container {
+    max-width: 1721px;
+    margin: 0 auto;
+    padding: 20px 30px;
+    background-color: var(--color-ice-effect);
+    min-height: 100vh;
+    
+    /* Основная Grid-сетка */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, auto); /* Шапка, заголовок, форма */
+    gap: 0;
+}
+
+/* Шапка (Grid) */
+.profile-card__header {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Заголовок (Grid) */
+.profile-card__body {
+    display: grid;
+    grid-template-rows: auto;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.profile-card__headline {
+    font-size: var(--font-size-h1);
+    margin-bottom: 10px;
+}
+
+/* Форма - основная Grid-сетка */
+.profile-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, auto);
+    gap: 30px;
+}
+
+/* Блок фотографии */
+.profile-form__photo-block {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    justify-items: center;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--color-shy-moment);
+    border-radius: 20px;
+    padding: 30px;
+    font-size: var(--font-size-base);
+}
+
+.profile-form__photo-area {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
+    text-align: center;
+}
+
+.profile-form__photo-title {
+    display: block;
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 10px;
+}
+
+.profile-form__photo-hint {
+    display: block;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
+    color: var(--color-gray);
+}
+
+.profile-form__photo-upload {
+    display: grid;
+    justify-items: center;
+    position: relative;
+    gap: 10px;
+}
+
+.profile-form__photo-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Строка 1: ФИО + Логин/Пароль (2 колонки) */
+.profile-form__row--first {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+/* Левая колонка (Логин, Пароль, Повтор пароля) */
+.profile-form__column--auth {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 20px;
+}
+
+/* Правая колонка (ФИО) */
+.profile-form__column--fio {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 20px;
+}
+
+/* Строка 2: Номер волонтёрской книжки (на всю ширину) */
+.profile-form__row--full {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.profile-form__group--full {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    gap: 8px;
+}
+
+/* Строка 3: Дата рождения/Опыт + Почта/Телефон/Язык (2 колонки) */
+.profile-form__row--third {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+/* Левая колонка (Дата рождения + Опыт участия) */
+.profile-form__column--personal {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    gap: 20px;
+}
+
+/* Правая колонка (Почта, Телефон, Язык) */
+.profile-form__column--contacts {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 20px;
+}
+
+/* Чекбоксы (вертикально, 4 строки) */
+.profile-form__checkboxes {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.profile-form__checkbox {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: var(--font-size-h3);
+}
+
+/* Строка 4: Кнопка отправки (на всю ширину, по центру) */
+.profile-form__row--submit {
+    display: grid;
+    justify-items: center;
+}
+
+/* Группы полей (общие стили) */
+.profile-form__group {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    gap: 8px;
+}
+
+.profile-form__group--error {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 8px;
+}
+
+/* Элементы формы */
+.profile-form__label {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+}
+
+.profile-form__input {
+    padding: 12px 15px;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    font-size: var(--font-size-h3);
+    font-family: inherit;
+}
+
+.profile-form__input:focus {
+    outline: none;
+    border-color: var(--color-galactic-highway);
+}
+
+.profile-form__input--error {
+    border-color: var(--color-error, #e74c3c);
+}
+
+.profile-form__select {
+    padding: 12px 15px;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    font-size: var(--font-size-h3);
+    background-color: var(--color-white);
+    font-family: inherit;
+}
+
+.profile-form__birthdate {
+    font-weight: var(--font-weight-normal);
+}
+
+/* Кнопка отправки */
+.profile-form__submit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 300px;
+    padding: 15px 40px;
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    background-color: var(--color-galactic-highway);
+    color: var(--color-white);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.profile-form__submit-button:hover {
+    transition: var(--transition-base);
+    background-color: var(--color-persian-indigo);
+}
+
+/* Кнопка загрузки фото */
+.profile-form__photo-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    padding: 12px 24px;
+    font-size: var(--font-size-h2);
+    background-color: var(--color-galactic-highway);
+    color: var(--color-white);
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.profile-form__photo-button:hover {
+    transition: var(--transition-base);
+    background-color: var(--color-persian-indigo);
+}
+
+/* Справка */
+.profile-card__sistem-button {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    font-size: var(--font-size-h2);
+    background-color: var(--color-galactic-highway);
+    color: var(--color-white);
+    border-radius: 15px;
+    text-decoration: none;
+}
+
+.profile-card__sistem-button:hover {
+    transition: var(--transition-base);
+    background-color: var(--color-persian-indigo);
+    text-decoration: none;
+}

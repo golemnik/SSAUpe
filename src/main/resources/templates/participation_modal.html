@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div th:fragment="successModal" id="participationSuccessModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 100000; align-items: center; justify-content: center; font-family: 'Roboto', sans-serif;">
+    <div style="background-color: #cceeff; width: 340px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 25px; text-align: center; position: relative; display: flex; flex-direction: column; gap: 15px;">
+
+        <span id="closeSuccessModal" style="position: absolute; top: 10px; right: 20px; cursor: pointer; color: #5d3fd3; font-size: 28px; font-weight: bold; line-height: 1;">&times;</span>
+
+        <h3 style="color: #2b00aa; margin: 0; font-size: 20px; font-weight: bold;">Уведомление</h3>
+
+        <div style="width: 60px; height: 3px; background-color: #4a90e2; margin: 0 auto;"></div>
+
+        <p style="color: #2b00aa; font-size: 15px; line-height: 1.4; margin: 10px 0;">
+            Вы успешно подали заявку на участие в мероприятии! <br>
+            <span style="font-size: 13px; color: #5d3fd3;">Статус вашей заявки можно отслеживать в личном кабинете.</span>
+        </p>
+
+        <button id="successOkBtn" style="background-color: #2b00aa; color: white; border: none; padding: 10px 30px; border-radius: 20px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 5px; align-self: center; transition: background 0.2s;">ОК</button>
+    </div>
+</div>
+
+</body>
+</html>
