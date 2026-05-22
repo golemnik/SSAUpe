@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Setter
@@ -17,13 +19,17 @@ public class Activity {
     private String name;
     private String description;
     private Integer maxVolunteers;
-
-    // Оставляем только 2 поля, которые хранят и дату, и время
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private String format;
+    private String direction;
     private Event event;
+    private LocalDate activityDate;
+    private String location;
+    private String territory;
+    private String contact;
     private Set<Application> applications;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,10 +45,14 @@ public class Activity {
     public Integer getMaxVolunteers() { return maxVolunteers; }
 
     @Column(name = "start_time")
-    public LocalDateTime getStartTime() { return startTime; }
+    public LocalTime getStartTime() {
+        return startTime;
+    }
 
     @Column(name = "end_time")
-    public LocalDateTime getEndTime() { return endTime; }
+    public LocalTime getEndTime() {
+        return endTime;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)

@@ -470,8 +470,8 @@ public class GeneralController {
             java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("d MMMM yyyy", new java.util.Locale("ru"));
             java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
 
-            String startDateStr = act.getStartTime() != null ? act.getStartTime().format(dateFormatter) : "";
-            String endDateStr = act.getEndTime() != null ? act.getEndTime().format(dateFormatter) : "";
+            String startDateStr = act.getStartTime() != null ? act.getStartTime().format(timeFormatter) : "";
+            String endDateStr = act.getEndTime() != null ? act.getEndTime().format(timeFormatter) : "";
 
             String actDateStr = startDateStr;
             if (!startDateStr.equals(endDateStr) && !endDateStr.isEmpty()) {

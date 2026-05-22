@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -19,12 +20,11 @@ public class Event {
     private String location;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Set<Activity> activities = new HashSet<>();
 
     private EventFormat format;
     private EventDirection direction;
     private EventForces forces;
-
-    private Set<Activity> activities;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,4 +60,14 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Activity> getActivities() { return activities; }
+
+    public void addActivity(Activity activity) {
+        activities.add(activity);
+        activity.setEvent(this);
+    }
+
+    public void removeActivity(Activity activity) {
+        activities.remove(activity);
+        activity.setEvent(null);
+    }
 }
