@@ -4,13 +4,18 @@
 @import url("./variables/transition.css");
 
 @import url("./sections/header.css");
+@import url("./sections/notifications-dialog.css");
 @import url("./sections/menu-dialog.css");
 @import url("./sections/hero.css");
 @import url("./sections/cards-examples.css");
 @import url("./sections/media-block.css");
 @import url("./sections/events-catalog.css");
+@import url("./sections/filter-dialog.css");
+@import url("./sections/event-details-modal.css");
 @import url("./sections/descr-of-capabilities.css");
 @import url("./sections/footer.css");
+@import url("./sections/confirm-dialog.css");
+
 
 /* Базовые стили шрифта с использованием переменных */
 body {

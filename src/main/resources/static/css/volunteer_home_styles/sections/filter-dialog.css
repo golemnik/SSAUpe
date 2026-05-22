@@ -1,0 +1,199 @@
+/* Основа диалогового окна фильтрации */
+.filter-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    color: var(--color-exodus-fruit);
+}
+
+/* Класс для показа окна */
+.filter-dialog--open {
+    display: grid;
+    place-items: center;
+}
+
+/* Контейнер диалога */
+.filter-dialog__container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background-color: var(--color-ice-effect);
+    border-radius: 16px;
+    max-width: 700px;
+    margin: 5% auto;
+    width: 90%;
+    max-height: 85vh;
+    overflow: hidden;
+}
+
+/* Шапка диалога: заголовок + кнопка закрытия */
+.filter-dialog__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 25px;
+}
+
+/* Заголовок диалога */
+.filter-dialog__headline {
+    font-size: var(--font-size-h3);
+    color: var(--color-galactic-highway);
+}
+
+/* Кнопка закрытия (крестик) */
+.filter-dialog__close-button {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Линии крестика */
+.filter-dialog__close-line {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: var(--color-galactic-highway);
+    border-radius: 2px;
+}
+
+/* Первая линия (повёрнута на 45°) */
+.filter-dialog__close-line:first-child {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+/* Вторая линия (повёрнута на -45°) */
+.filter-dialog__close-line:last-child {
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Контент с прокруткой */
+.filter-dialog__content {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    row-gap: 30px;
+    padding: 20px 25px;
+    overflow-y: auto;
+}
+
+/* Кастомный скроллбар */
+.filter-dialog__content::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Дорожка скроллбара */
+.filter-dialog__content::-webkit-scrollbar-track {
+    background: var(--color-shy-moment);
+    border-radius: 10px;
+}
+
+/* Бегунок скроллбара */
+.filter-dialog__content::-webkit-scrollbar-thumb {
+    background: var(--color-galactic-highway);
+    border-radius: 10px;
+}
+
+/* Подвал с кнопками */
+.filter-dialog__footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 20px 25px;
+}
+
+/* Кнопка сброса фильтров */
+.filter-dialog__reset {
+    padding: 12px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    font-size: var(--font-size-base);
+    background-color: var(--color-white);
+    color: var(--color-galactic-highway);
+    border: 1px solid var(--color-border);
+}
+
+/* Кнопка применения фильтров */
+.filter-dialog__apply {
+    padding: 12px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    font-size: var(--font-size-base);
+    background-color: var(--color-galactic-highway);
+    color: var(--color-white);
+}
+
+/* Эффект при наведении на кнопку сброса */
+.filter-dialog__reset:hover {
+    transition: var(--transition-base);
+    background-color: var(--color-exodus-fruit);
+}
+
+/* Секции фильтра */
+.filter-section {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    row-gap: 20px;
+}
+
+/* Заголовок секции фильтра */
+.filter-section__headline {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-galactic-highway);
+}
+
+/* Варианты фильтра по территориальному охвату (6 категорий) */
+.filter-section__area-options {
+    display: grid;
+    grid-template-rows: repeat(6, auto);
+    row-gap: 10px;
+    font-size: var(--font-size-h4);
+}
+
+/* Варианты фильтра по направлению деятельности (9 категорий) */
+.filter-section__action-options {
+    display: grid;
+    grid-template-rows: repeat(9, auto);
+    row-gap: 10px;
+    font-size: var(--font-size-h4);
+}
+
+/* Варианты фильтра по формату участия (3 категории) */
+.filter-section__format-options {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    row-gap: 10px;
+    font-size: var(--font-size-h4);
+}
+
+/* Стили для чекбоксов */
+.filter-checkbox {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* Чекбокс */
+.filter-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--color-galactic-highway);
+}
+
+/* Текст чекбокса */
+.filter-checkbox span {
+    user-select: none;
+}

@@ -1,120 +1,175 @@
-/* Контейнер секции каталога событий */
-.events-catalog__container {
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: repeat(4, auto);
-    row-gap: 30px;
-    justify-items: center;
+.events-catalog {
+    background-color: #2884F8; /* Ярко-синий цвет как на 2-й картинке */
     max-width: 1721px;
-    padding: 30px 20px;
+    padding: 60px 0; /* Отступы сверху и снизу */
     margin: 0 auto;
-    background-color: var(--color-pool-water);
 }
 
-/* Скроллбар для списка событий */
-.events-list::-webkit-scrollbar {
-    width: 8px;
+/* --- КОНТЕЙНЕР (Убираем фиолетовый фон и скругления) --- */
+.events-catalog__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px; /* Оставляем только безопасные отступы по бокам */
+    background-color: transparent; /* Делаем прозрачным */
+    border-radius: 0; /* Убираем скругления */
 }
 
-.events-list::-webkit-scrollbar-track {
-    background: var(--color-shy-moment);
-    border-radius: 10px;
-}
-
-.events-list::-webkit-scrollbar-thumb {
-    background: var(--color-galactic-highway);
-    border-radius: 10px;
-}
-
-/* Базовая кнопка */
-.button {
-    color: var(--color-white);
-    background-color: var(--color-galactic-highway);
-    cursor: pointer;
-    text-align: center;
-    border: none;
-}
-
-/* Эффект при наведении на любую кнопку */
-.button:hover {
-    transition: var(--transition-base);
-    background-color: var(--color-persian-indigo);
-}
-
-/* Заголовок секции */
+/* Белый заголовок "Каталог событий" по центру */
 .events-catalog__headline {
     text-align: center;
-    font-size: var(--font-size-h1);
-    font-weight: var(--font-weight-bold);
+    color: #ffffff;
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 30px;
 }
 
-/* Строка поиска и фильтрации */
+/* --- СТРОКА ПОИСКА --- */
 .events-catalog__search-bar {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    column-gap: 20px;
-}
-
-/* Кнопка фильтра (три полоски) */
-.filter-button {
-    display: grid;
-    grid-template-rows: repeat(3, auto);
-    background-color: var(--color-galactic-highway);
+    display: flex;
+    justify-content: center;
     align-items: center;
-    justify-items: center;
-    width: 52px;
-    height: 50px;
-    border-radius: 10px;
-    padding-block: 5px;
-    border: none;
+    gap: 15px; /* Расстояние между кнопками и полем ввода */
+    margin-bottom: 40px;
+    width: 100%;
 }
 
-/* Полоски кнопки фильтра */
+.search-input {
+    width: 100%;
+    max-width: 500px; /* Длинная белая строка */
+    height: 50px;
+    border-radius: 25px;
+    border: none;
+    padding: 0 25px;
+    font-size: 16px;
+    outline: none;
+}
+
+.filter-button, .search-button {
+    width: 50px;
+    height: 50px;
+    background-color: #5d3fd3; /* Фиолетовый цвет кнопок */
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* Полоски внутри кнопки фильтра */
 .filter-button__line {
     display: block;
-    width: 70%;
-    height: 6px;
-    background-color: var(--color-white);
+    width: 60%;
+    height: 3px;
+    background-color: white;
     border-radius: 2px;
 }
 
-/* Обёртка поиска */
-.search-wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    column-gap: 50px;
+/* Иконка лупы */
+.search-button__search-icon {
+    width: 20px;
+    height: auto;
 }
 
-/* Поле ввода поиска */
-.search-input {
-    min-width: 500px;
-    border-radius: 20px;
-    padding: 15px 10px;
-}
-
-/* Кнопка поиска (лупа) */
-.search-button {
-    display: grid;
-    grid-template-columns: auto;
-    align-items: center;
-    justify-items: center;
-    width: 52px;
-    height: 50px;
-    font-size: var(--font-size-h1);
-    font-weight: var(--font-weight-bold);
-    border-radius: 15px;
-}
-
-/* Сообщение о пустом списке событий */
+/* --- БЛОК СООБЩЕНИЯ (Когда нет событий) --- */
 .empty-events-message {
+    grid-column: 1 / -1;
+    background-color: #4b0bb3;
+    color: #ffffff;
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.empty-events-message p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.events-list {
     display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: repeat(2, auto);
-    row-gap: 20px;
-    align-items: center;
-    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 30px;
+
+    max-height: 550px;
+    overflow-y: auto;
+
+    padding: 10px 15px 20px 10px;
+}
+.events-list::-webkit-scrollbar {
+    width: 10px;
+}
+.events-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+.events-list::-webkit-scrollbar-thumb {
+    background: #5d3fd3;
+    border-radius: 10px;
+}
+.events-list::-webkit-scrollbar-thumb:hover {
+    background: #4b0bb3;
+}
+.event-card-catalog {
+    background-color: #cceeff;
     border-radius: 20px;
+    aspect-ratio: 1 / 1;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 20px;
-    font-size: var(--font-size-h4);
-    background-color: var(--color-galactic-highway);
+
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Эффект при наведении (карточка приподнимается) */
+.event-card-catalog:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Заголовок внутри карточки */
+.event-card-catalog__headline {
+    color: #2b00aa; /* Темно-фиолетовый текст */
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+/* Текст даты и локации внутри карточки */
+.event-card-catalog__datetime,
+.event-card-catalog__location {
+    color: #2b00aa; /* Темно-фиолетовый текст */
+    font-size: 14px;
+    margin: 5px 0;
+    font-weight: 500;
+}
+@media (max-width: 900px) {
+    .events-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки на планшетах */
+    }
+}
+@media (max-width: 600px) {
+    .events-list {
+        grid-template-columns: 1fr; /* 1 колонка на телефонах */
+        max-height: 600px;
+    }
 }

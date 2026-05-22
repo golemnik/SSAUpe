@@ -8,11 +8,11 @@
   const menuLinks = menuDialog ? menuDialog.querySelectorAll('.menu-dialog__link') : [];
 
   const sectionIds = [
-    'about-project',       // Краткое описание проекта
-    'events-examples',     // Примеры мероприятий
-    'events-catalog',      // Возможности системы
-    'capabilities',        // Участие в проекте
-    'additional-info'      // Дополнительная информация
+    'about-project',
+    'events-examples',
+    'events-catalog',
+    'capabilities',
+    'additional-info'
   ];
 
   function openMenu() {
@@ -51,18 +51,16 @@
     });
   });
 
-
 // =========================================================================
 // 2. УПРАВЛЕНИЕ ОКНОМ УВЕДОМЛЕНИЙ И ДИНАМИЧЕСКИМИ КАРТОЧКАМИ
 // =========================================================================
   const notificationsButton = document.getElementById('notificationsButton');
   let notificationsFromDb = [];
 
-// Хранилище контекста для асинхронных операций
   let currentOpenEventId = null;
   let pendingActionCallback = null;
+  let needReload = false;
 
-// Создаем всплывающее маленькое окно уведомлений (Ширина 380px под дизайн-макет)
   const notifModal = document.createElement('div');
   notifModal.id = 'notificationsModal';
   notifModal.style.cssText = `
@@ -80,7 +78,6 @@
   document.body.appendChild(notifModal);
 
   function renderNotifications() {
-    // Заголовок увеличен до 22px согласно спецификации
     let contentHtml = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
       <h3 style="color: #2b00aa; margin: 0; font-size: 22px; font-weight: bold;">Уведомления</h3>
@@ -90,14 +87,12 @@
   `;
 
     if (notificationsFromDb.length === 0) {
-      // ИСПРАВЛЕНИЕ: Заглушка удалена. Выводим аккуратный текст об отсутствии уведомлений
       contentHtml += `
       <div style="font-size: 16px; color: #2b00aa; text-align: center; padding: 30px 10px; font-weight: 500; line-height: 1.4;">
         Уведомлений нет
       </div>
     `;
     } else {
-      // Вывод реальных строк уведомлений из СУБД PostgreSQL
       notificationsFromDb.forEach((notif, index) => {
         contentHtml += `
         <div class="notif-item-container" style="background-color: #2b00aa; color: #ffffff; padding: 16px; border-radius: 12px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);">
@@ -115,13 +110,11 @@
     contentHtml += `</div>`;
     notifModal.innerHTML = contentHtml;
 
-    // Клик по крестику закрывает выпадающий список
     document.getElementById('closeNotif').onclick = (e) => {
       e.stopPropagation();
       notifModal.style.display = 'none';
     };
 
-    // Клик по тексту плашки открывает Карточку мероприятия (Рисунок 17 / Вариант А2)
     notifModal.querySelectorAll('.notif-item-click').forEach(item => {
       item.onclick = function(e) {
         e.stopPropagation();
@@ -148,7 +141,6 @@
       };
     });
 
-    // Отмена заявки напрямую через выпадающий список уведомлений (СВЯЗАНО С ОКНОМ ПОДТВЕРЖДЕНИЯ)
     notifModal.querySelectorAll('.notif-cancel-btn').forEach(btn => {
       btn.onclick = function(e) {
         e.stopPropagation();
@@ -165,7 +157,6 @@
     const activityCardModal = document.getElementById('activityCardModal');
     if (!activityCardModal) return;
 
-    // Запоминаем ID записи
     currentOpenEventId = data.activityId || null;
 
     const titleEl = document.getElementById('modalActivityTitle');
@@ -180,7 +171,6 @@
     const statusValue = document.getElementById('modalApplicationStatusValue');
     const closedMessage = document.getElementById('modalClosedMessage');
 
-    // Наполняем контентом
     if (titleEl) titleEl.textContent = data.title || "Название мероприятия";
     if (dateEl) dateEl.textContent = data.datetime || "Дата и время проведения";
     if (descEl) descEl.textContent = data.description || "Описание отсутствует";
@@ -192,7 +182,6 @@
     if (formatEl) formatEl.textContent = data.format || "Очный";
     if (dirEl) dirEl.textContent = data.direction || "Общее";
 
-    // Сброс видимости элементов перед проверкой бизнес-логики ТЗ
     if (participateBtn) {
       participateBtn.style.display = 'block';
       participateBtn.disabled = false;
@@ -202,9 +191,6 @@
     if (statusBlock) statusBlock.style.display = 'none';
     if (closedMessage) closedMessage.style.display = 'none';
 
-    // --- РЕАЛИЗАЦИЯ ВАЛИДАЦИИ ПО СЦЕНАРИЮ ТЗ ---
-
-    // Альтернатива А2: Волонтёр уже подал заявку на это мероприятие
     if (data.text) {
       let currentStatusText = "На рассмотрении";
       if (data.text.includes("одобрена")) currentStatusText = "Подтверждена";
@@ -214,13 +200,11 @@
       if (statusBlock) statusBlock.style.display = 'block';
       if (statusValue) statusValue.textContent = currentStatusText;
 
-      // Если заявка отклонена организатором, кнопку удаления прячем
       const innerCancelBtn = document.getElementById('modalCancelApplyBtn');
       if (innerCancelBtn) {
         innerCancelBtn.style.display = (currentStatusText === "Отклонена") ? 'none' : 'inline-block';
       }
     }
-    // Альтернатива А1: Набор участников окончен
     else if (currentVols >= maxVols && maxVols > 0) {
       if (participateBtn) {
         participateBtn.disabled = true;
@@ -245,12 +229,11 @@
         })
         .catch(error => {
           console.warn('Режим автономной работы макета (БД недоступна):', error.message);
-          notificationsFromDb = []; // Явно очищаем массив при ошибке сети, чтобы вывести надпись
+          notificationsFromDb = [];
           renderNotifications();
         });
   }
 
-// Первичная инициализация списков при загрузке страницы
   fetchNotifications();
 
   function positionNotifModal() {
@@ -277,9 +260,8 @@
     if (notifModal.style.display === 'block') positionNotifModal();
   });
 
-
 // =========================================================================
-// 3. НОВОЕ: ЛОГИКА ДИАЛОГОВОГО ОКНА ПОДТВЕРЖДЕНИЯ ДЕЙСТВИЯ (CONFIRMATION)
+// 3. ЛОГИКА ДИАЛОГОВОГО ОКНА ПОДТВЕРЖДЕНИЯ ДЕЙСТВИЯ (CONFIRMATION)
 // =========================================================================
   function askConfirmation(textHtml, onConfirmCallback) {
     const confirmModal = document.getElementById('actionConfirmationModal');
@@ -297,12 +279,10 @@
     confirmModal.style.setProperty('display', 'flex', 'important');
   }
 
-
 // =========================================================================
 // 4. АСИНХРОННЫЕ AJAX ЗАПРОСЫ И ОБНОВЛЕНИЕ БАЗЫ ДАННЫХ
 // =========================================================================
   function executeCancellation(eventId) {
-    // Если это тестовая запись (демо-режим без БД), обрабатываем локально
     if (eventId === "test" || !eventId) {
       notificationsFromDb = notificationsFromDb.filter(n => n.activityId !== "test");
       renderNotifications();
@@ -310,25 +290,17 @@
       return;
     }
 
-    // 1. Извлекаем CSRF-токены из мета-тегов HTML (защита от ошибки 403)
     const csrfToken = document.querySelector("meta[name='_csrf']")?.getAttribute("content");
     const csrfHeader = document.querySelector("meta[name='_csrf_header']")?.getAttribute("content");
 
-    // 2. Формируем базовые заголовки для REST JSON API
     const headers = {
       'Content-Type': 'application/json'
     };
 
-    // 3. Подмешиваем CSRF-токен в заголовки, если Spring Security сгенерировал его в HTML
     if (csrfToken && csrfHeader) {
       headers[csrfHeader] = csrfToken;
-    } else {
-      console.warn("Предупреждение: CSRF мета-теги не найдены в head страницы! Запрос может отклоняться сервером.");
     }
 
-    console.log("Отправка POST-запроса на отмену заявки для eventId:", eventId);
-
-    // 4. Отправляем POST запрос с JSON-телом, где ID приведен к строке (защита от ошибки 400)
     fetch(`/api/applications/cancel`, {
       method: 'POST',
       headers: headers,
@@ -340,27 +312,18 @@
         })
         .then(data => {
           if (data.success) {
-            console.log("Статус заявки в PostgreSQL успешно изменен на CANCELED.");
-
-            // 5. МГНОВЕННОЕ УДАЛЕНИЕ: вырезаем отмененную запись из локального массива уведомлений
             notificationsFromDb = notificationsFromDb.filter(notif => notif.activityId != eventId);
-
-            // 6. Перерисовываем интерфейс (если массив пуст — автоматически отобразится «Уведомлений нет»)
             renderNotifications();
-
-            // 7. Закрываем модалки и выводим финальное диалоговое окно об успехе
             finalizeActionWorkflow(
                 "Вы успешно <span style='color: #ff4d4d; font-weight: bold;'>отменили</span> заявку на участие! <br><span style='font-size: 15px; color: #5d3fd3; display: inline-block; margin-top: 8px;'>Данные в СУБД обновлены.</span>",
                 "Отмена заявки"
             );
+            needReload = true;
           } else {
             alert(data.message || "Не удалось отменить заявку.");
           }
         })
         .catch(err => {
-          console.warn("Фоллбэк-режим интерфейса (автономное скрытие из-за ошибки сети):", err.message);
-
-          // Защитный механизм для демонстрации: даже если бэкенд упал, убираем плашку у пользователя на глазах
           notificationsFromDb = notificationsFromDb.filter(notif => notif.activityId != eventId);
           renderNotifications();
           finalizeActionWorkflow("Заявка успешно отменена!", "Отмена заявки");
@@ -387,6 +350,307 @@
     }
   }
 
+// =========================================================================
+// 6. ОТКРЫТИЕ МОДАЛЬНОГО ОКНА ПО КЛИКУ НА КАРТОЧКИ ИЗ БАЗЫ ДАННЫХ
+// =========================================================================
+  window.handleMainCardClick = function(element) {
+    const data = {
+      activityId: element.getAttribute('data-activity-id'),
+      title: element.getAttribute('data-title'),
+      description: element.getAttribute('data-description'),
+      datetime: element.getAttribute('data-datetime'),
+      format: element.getAttribute('data-format'),
+      direction: element.getAttribute('data-direction'),
+      volunteersMax: parseInt(element.getAttribute('data-vols-max')) || 0,
+      volunteersCurrent: parseInt(element.getAttribute('data-vols-current')) || 0,
+      text: element.getAttribute('data-text')
+    };
+
+    openActivityCard(data);
+  };
+
+// =========================================================================
+// 7. КАТАЛОГ СОБЫТИЙ: ПОИСК, ФИЛЬТРАЦИЯ И МОДАЛЬНОЕ ОКНО
+// =========================================================================
+  let allCatalogEvents = [];
+
+  const eventsListContainer = document.getElementById('eventsListContainer');
+  const emptyEventsMessage = document.getElementById('emptyEventsMessage');
+
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const openFilterBtn = document.getElementById('openFilterBtn');
+
+  const filterDialog = document.getElementById('filterDialog');
+  const closeFilterBtn = document.querySelector('.filter-dialog__close-button');
+  const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+  const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+  const eventDetailsModal = document.getElementById('eventDetailsModal');
+  const closeEventModalBtn = document.querySelector('.event-details-modal__close');
+  const modalEventTitle = document.getElementById('modalEventTitle');
+  const modalEventDate = document.getElementById('modalEventDate');
+  const modalEventDescription = document.getElementById('modalEventDescription');
+  const modalActivitiesList = document.getElementById('modalActivitiesList');
+  const emptyActivitiesMessage = document.getElementById('emptyActivitiesMessage');
+
+  function fetchCatalogEvents() {
+    fetch('/api/catalog/events')
+        .then(res => res.json())
+        .then(data => {
+          allCatalogEvents = data;
+          renderCatalog(allCatalogEvents);
+        })
+        .catch(err => console.error("Ошибка загрузки каталога:", err));
+  }
+
+  function renderCatalog(eventsToRender) {
+    // Очищаем контейнер, оставляя только элемент пустого сообщения
+    Array.from(eventsListContainer.children).forEach(child => {
+      if (child.id !== 'emptyEventsMessage') {
+        child.remove();
+      }
+    });
+
+    if (eventsToRender.length === 0) {
+      // ПОКАЗЫВАЕМ СООБЩЕНИЕ И ВЫРАВНИВАЕМ (меняем текст динамически)
+      const isFiltered = searchInput.value.trim() !== '' || document.querySelectorAll('#filterDialog input[type="checkbox"]:checked').length > 0;
+
+      if (isFiltered) {
+        emptyEventsMessage.innerHTML = `
+              <p>По вашему запросу и выбранным фильтрам ничего не найдено.</p>
+              <p>Попробуйте изменить параметры поиска.</p>
+          `;
+      } else {
+        emptyEventsMessage.innerHTML = `
+              <p>В каталоге пока нет доступных событий.</p>
+              <p>Загляните позже — организаторы обязательно добавят новые.</p>
+          `;
+      }
+
+      emptyEventsMessage.style.display = 'flex'; // Меняем на flex для красивого центрирования
+    } else {
+      emptyEventsMessage.style.display = 'none';
+
+      eventsToRender.forEach(event => {
+        const directionTag = event.direction ? `<span style="background-color: #5d3fd3; color: white; padding: 5px 12px; border-radius: 12px; font-size: 13px; font-weight: 500;">${event.direction}</span>` : '';
+        const forcesTag = event.forces ? `<span style="background-color: #5d3fd3; color: white; padding: 5px 12px; border-radius: 12px; font-size: 13px; font-weight: 500;">${event.forces}</span>` : '';
+        const formatTag = event.format ? `<span style="background-color: #5d3fd3; color: white; padding: 5px 12px; border-radius: 12px; font-size: 13px; font-weight: 500;">${event.format}</span>` : '';
+
+        const tagsContainer = (directionTag || forcesTag || formatTag) ? `
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 15px;">
+                 ${directionTag}
+                 ${forcesTag}
+                 ${formatTag}
+            </div>
+        ` : '';
+
+        const cardHtml = `
+              <div class="event-card-catalog" onclick="openEventDetailsModalById(${event.eventId})">
+                  <h3 class="event-card-catalog__headline">${event.title}</h3>
+                  ${tagsContainer}
+                  <p class="event-card-catalog__datetime">${event.datetime}</p>
+                  <p class="event-card-catalog__location">${event.location || ''}</p>
+              </div>
+            `;
+        eventsListContainer.insertAdjacentHTML('beforeend', cardHtml);
+      });
+    }
+  }
+
+  window.openEventDetailsModalById = function(eventId) {
+    const eventData = allCatalogEvents.find(e => e.eventId === eventId);
+    if (!eventData) return;
+
+    modalEventTitle.textContent = eventData.title;
+    modalEventDate.textContent = eventData.datetime;
+    modalEventDescription.textContent = eventData.description;
+
+    modalActivitiesList.innerHTML = '';
+
+    if (!eventData.activities || eventData.activities.length === 0) {
+      emptyActivitiesMessage.style.display = 'block';
+    } else {
+      emptyActivitiesMessage.style.display = 'none';
+
+      eventData.activities.forEach(act => {
+        const isClosed = act.isClosed;
+        const hasApplied = !!act.userStatus;
+        let statusText = 'Набор открыт';
+
+        if (hasApplied) {
+          statusText = 'Заявка ' + act.userStatus.toLowerCase();
+        } else if (isClosed) {
+          statusText = 'Набор завершён';
+        }
+
+        const directionTag = eventData.direction ? `<span class="activity-modal-card__category-tag" style="background-color: #5d3fd3; padding: 4px 12px; border-radius: 12px; font-size: 12px;">${eventData.direction}</span>` : '';
+        const formatTag = eventData.format ? `<span class="activity-modal-card__category-tag" style="background-color: #5d3fd3; padding: 4px 12px; border-radius: 12px; font-size: 12px;">${eventData.format}</span>` : '';
+        const forcesTag = eventData.forces ? `<span class="activity-modal-card__category-tag" style="background-color: #5d3fd3; padding: 4px 12px; border-radius: 12px; font-size: 12px;">${eventData.forces}</span>` : '';
+
+        // Генерируем карточку
+        const actHtml = `
+            <div class="activity-modal-card" 
+                 style="background-color: #2b00aa; border-radius: 15px; padding: 20px; color: white; display: flex; flex-direction: column; text-align: center; gap: 10px; cursor: pointer; transition: transform 0.2s;"
+                 onmouseover="this.style.transform='translateY(-5px)'" 
+                 onmouseout="this.style.transform='translateY(0)'"
+                 data-activity-id="${act.activityId}"
+                 data-title="${act.title}"
+                 data-description="${eventData.description || 'Описание отсутствует'}"
+                 data-datetime="${act.date} | ${act.time}" 
+                 data-format="${eventData.format || ''}"
+                 data-direction="${eventData.direction || ''}"
+                 data-vols-max="${act.volunteersMax}"
+                 data-vols-current="${act.volunteersCurrent}"
+                 data-text="${act.userStatus ? act.userStatus.toLowerCase() : ''}"
+                 onclick="handleInnerActivityClick(this)">
+                 
+                <h4 style="margin: 0; font-size: 20px;">${act.title}</h4>
+                
+                <p style="margin: 0; font-size: 14px; color: #a4bdfc; line-height: 1.4;">
+                    ${act.date}<br>
+                    ${act.time}
+                </p>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 10px 0;">
+                    ${directionTag}
+                    ${formatTag}
+                    ${forcesTag}
+                </div>
+                
+                <p style="margin: auto 0 10px 0; font-size: 14px; font-weight: bold;">
+                    Требуется волонтёров:<br>${act.volunteersCurrent}/${act.volunteersMax}
+                </p>
+                
+                <p style="margin: 0; font-size: 16px; font-weight: bold; color: #ff9900;">
+                    ${statusText}
+                </p>
+            </div>
+        `;
+        modalActivitiesList.insertAdjacentHTML('beforeend', actHtml);
+      });
+    }
+
+    eventDetailsModal.style.display = 'flex';
+  };
+
+  window.handleInnerActivityClick = function(element) {
+    const data = {
+      activityId: element.getAttribute('data-activity-id'),
+      title: element.getAttribute('data-title'),
+      description: element.getAttribute('data-description'),
+      datetime: element.getAttribute('data-datetime'),
+      format: element.getAttribute('data-format'),
+      direction: element.getAttribute('data-direction'),
+      volunteersMax: parseInt(element.getAttribute('data-vols-max')) || 0,
+      volunteersCurrent: parseInt(element.getAttribute('data-vols-current')) || 0,
+      text: element.getAttribute('data-text')
+    };
+
+    const eventDetailsModal = document.getElementById('eventDetailsModal');
+    if (eventDetailsModal) {
+      eventDetailsModal.style.display = 'none';
+    }
+
+    openActivityCard(data);
+  };
+
+  window.handleActivityApplyClick = function(e, buttonElement) {
+    e.stopPropagation();
+    const actId = buttonElement.getAttribute('data-activity-id');
+    currentOpenEventId = actId;
+
+    const mainParticipateBtn = document.getElementById('modalParticipateBtn');
+    if (mainParticipateBtn) {
+      mainParticipateBtn.click();
+    }
+  };
+
+  if (closeEventModalBtn) {
+    closeEventModalBtn.addEventListener('click', () => {
+      eventDetailsModal.style.display = 'none';
+    });
+  }
+
+  window.addEventListener('click', (e) => {
+    if (e.target === eventDetailsModal) {
+      eventDetailsModal.style.display = 'none';
+    }
+  });
+
+  // --- ЛОГИКА ФИЛЬТРАЦИИ И ПОИСКА ---
+  function applyFiltersAndSearch() {
+    const searchText = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+    const checkedDirections = Array.from(document.querySelectorAll('input[name="direction"]:checked')).map(cb => cb.value);
+    const checkedFormats = Array.from(document.querySelectorAll('input[name="format"]:checked')).map(cb => cb.value);
+    const checkedTerritories = Array.from(document.querySelectorAll('input[name="territory"]:checked')).map(cb => cb.value);
+
+    const filteredEvents = allCatalogEvents.filter(event => {
+      const matchesText = event.title.toLowerCase().includes(searchText) ||
+          event.description.toLowerCase().includes(searchText);
+
+      const matchesDirection = checkedDirections.length === 0 || checkedDirections.some(d => event.directions.includes(d));
+      const matchesFormat = checkedFormats.length === 0 || checkedFormats.some(f => event.formats.includes(f));
+      const matchesTerritory = checkedTerritories.length === 0 || checkedTerritories.some(t => event.territories.includes(t));
+
+      return matchesText && matchesDirection && matchesFormat && matchesTerritory;
+    });
+
+    renderCatalog(filteredEvents);
+  }
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', applyFiltersAndSearch);
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') applyFiltersAndSearch();
+    });
+  }
+
+  // --- ОБРАБОТЧИКИ МОДАЛЬНОГО ОКНА ФИЛЬТРА (CSS КЛАССЫ) ---
+  if (openFilterBtn && filterDialog) {
+    openFilterBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Открываем модалку через класс CSS
+      filterDialog.classList.add('filter-dialog--open');
+    });
+  }
+
+  if (closeFilterBtn) {
+    closeFilterBtn.addEventListener('click', () => {
+      filterDialog.classList.remove('filter-dialog--open');
+    });
+  }
+
+  // Закрытие фильтра при клике на темный фон вне контейнера
+  window.addEventListener('click', (e) => {
+    if (e.target === filterDialog) {
+      filterDialog.classList.remove('filter-dialog--open');
+    }
+  });
+
+  if (applyFiltersBtn) {
+    applyFiltersBtn.addEventListener('click', () => {
+      applyFiltersAndSearch();
+      filterDialog.classList.remove('filter-dialog--open');
+    });
+  }
+
+  if (resetFiltersBtn) {
+    resetFiltersBtn.addEventListener('click', () => {
+      document.querySelectorAll('#filterDialog input[type="checkbox"]').forEach(cb => cb.checked = false);
+      if (searchInput) searchInput.value = '';
+      applyFiltersAndSearch();
+      filterDialog.classList.remove('filter-dialog--open');
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    fetchCatalogEvents();
+  });
 
 // =========================================================================
 // 5. ИНИЦИАЛИЗАЦИЯ И СЛУШАТЕЛИ КЛИКОВ ПОСЛЕ СБОРКИ DOM
@@ -421,31 +685,64 @@
     if (mainParticipateBtn) {
       mainParticipateBtn.onclick = function(e) {
         e.stopPropagation();
-        const finalId = currentOpenEventId || "1";
+
+        const finalId = currentOpenEventId;
+        if (!finalId) return;
+
+        const csrfToken = document.querySelector("meta[name='_csrf']")?.getAttribute("content");
+        const csrfHeader = document.querySelector("meta[name='_csrf_header']")?.getAttribute("content");
+
+        const headers = { 'Content-Type': 'application/json' };
+        if (csrfToken && csrfHeader) {
+          headers[csrfHeader] = csrfToken;
+        }
+
+        const originalText = mainParticipateBtn.innerText;
+        mainParticipateBtn.innerText = "Отправка...";
+        mainParticipateBtn.disabled = true;
 
         fetch('/api/applications/apply', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: headers,
           body: JSON.stringify({ eventId: finalId })
         })
-            .then(res => res.json())
+            .then(res => {
+              if (!res.ok) throw new Error("Ошибка ответа сервера");
+              return res.json();
+            })
             .then(data => {
               if (data.success) {
+                mainParticipateBtn.style.display = 'none';
+
+                const statusBlock = document.getElementById('modalApplicationStatusBlock');
+                const statusValue = document.getElementById('modalApplicationStatusValue');
+                const cancelBtn = document.getElementById('modalCancelApplyBtn');
+
+                if (statusBlock) statusBlock.style.display = 'block';
+                if (statusValue) statusValue.textContent = "На рассмотрении";
+                if (cancelBtn) cancelBtn.style.display = 'inline-block';
+
                 finalizeActionWorkflow(`
-            Вы успешно подали заявку на участие в мероприятии! <br>
-            <span style="font-size: 15px; color: #5d3fd3; display: inline-block; margin-top: 8px;">
-              Статус: <b>${data.status}</b>. Его можно отслеживать на странице «Мои заявки».
-            </span>
-          `, "Уведомление");
+              Вы успешно подали заявку на участие в мероприятии! <br>
+              <span style="font-size: 15px; color: #5d3fd3; display: inline-block; margin-top: 8px;">
+                Статус: <b>${data.status}</b>.
+              </span>
+            `, "Успех!");
+
                 fetchNotifications();
+                needReload = true;
+
               } else {
-                alert(`Ошибка системы: ${data.message}`);
+                alert(`Внимание: ${data.message}`);
+                mainParticipateBtn.innerText = originalText;
+                mainParticipateBtn.disabled = false;
               }
             })
             .catch(err => {
-              console.error("Сбой бэкенда, выполняем макетное переключение окон для защиты проекта:", err);
-              if (activityCardModal) activityCardModal.style.display = 'none';
-              if (participationSuccessModal) participationSuccessModal.style.setProperty('display', 'flex', 'important');
+              console.error("Сбой:", err);
+              alert("Произошла ошибка соединения с сервером.");
+              mainParticipateBtn.innerText = originalText;
+              mainParticipateBtn.disabled = false;
             });
       };
     }
@@ -475,7 +772,9 @@
       successOkBtn.onclick = (e) => { e.stopPropagation(); participationSuccessModal.style.display = 'none'; };
     }
     if (participationSuccessModal) {
-      participationSuccessModal.onclick = (e) => { if (e.target === participationSuccessModal) participationSuccessModal.style.display = 'none'; };
+      participationSuccessModal.onclick = (e) => { if (e.target === participationSuccessModal) participationSuccessModal.style.display = 'none'; if (needReload) {
+        window.location.reload();
+      } };
     }
     if (actionConfirmationModal) {
       actionConfirmationModal.onclick = (e) => { if (e.target === actionConfirmationModal) actionConfirmationModal.style.display = 'none'; };

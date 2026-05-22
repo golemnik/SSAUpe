@@ -3,7 +3,6 @@ package com.ssau.project.ssaupe.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -31,7 +30,7 @@ public class SystemUser {
     private String email;                               // Электронная почта
     private String phoneNumber;                         // Номер телефона
     private String additionalLanguage;                  // Дополнительный язык
-    private Set<ParticipationExperience> experiences;   // Опыт участия (Checkboxes)
+    private Set<ParticipationExperience> experiences;   // Опыт участия
     @Lob
     @Column(columnDefinition = "BYTEA")
     private byte[] profile_picture;
@@ -61,9 +60,7 @@ public class SystemUser {
         return experiences;
     }
 
-    public void setProfile_picture(MultipartFile profile_picture) throws IOException {
-        if (profile_picture != null && !profile_picture.isEmpty()) {
-            this.profile_picture = profile_picture.getBytes();
-        }
+    public void setProfile_picture(byte[] profile_picture) {
+        this.profile_picture = profile_picture;
     }
 }

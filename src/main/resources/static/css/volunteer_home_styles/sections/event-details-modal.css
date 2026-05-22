@@ -1,0 +1,164 @@
+.event-details-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 6000;
+    display: none;
+}
+/* =========================================================================
+   МОДАЛЬНОЕ ОКНО СОБЫТИЯ (ИЗ КАТАЛОГА - КАРТИНКА 3)
+   ========================================================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.event-modal-content {
+    background-color: #cceeff; /* Светло-голубой фон модалки */
+    width: 90%;
+    max-width: 700px;
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Крестик закрытия */
+.event-details-modal__close {
+    position: absolute;
+    top: 20px; right: 25px;
+    background: none; border: none;
+    font-size: 50px;
+    font-weight: bold;
+    color: #5d3fd3;
+    cursor: pointer;
+    line-height: 0.6;
+}
+
+.event-modal__title {
+    color: #2b00aa;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+}
+
+.event-modal__date {
+    color: #5577ff;
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+/* Темно-фиолетовый блок описания */
+.event-modal__description-box {
+    background-color: #2b00aa;
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
+
+.event-modal__activities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+
+    max-height: 480px;
+    overflow-y: auto;
+
+    padding-right: 12px;
+    padding-bottom: 10px;
+}
+
+
+.event-modal__activities-grid::-webkit-scrollbar {
+    width: 10px; /* Делаем скроллбар достаточно широким и удобным */
+}
+.event-modal__activities-grid::-webkit-scrollbar-track {
+    background: rgba(43, 0, 170, 0.1); /* Легкий полупрозрачный след на голубом фоне */
+    border-radius: 10px;
+}
+.event-modal__activities-grid::-webkit-scrollbar-thumb {
+    background: #2b00aa; /* Темно-фиолетовый ползунок (в цвет самих карточек) */
+    border-radius: 10px;
+}
+.event-modal__activities-grid::-webkit-scrollbar-thumb:hover {
+    background: #5d3fd3; /* Ползунок светлеет при наведении мыши */
+}
+
+/* Вложенная карточка мероприятия (темно-фиолетовая) */
+.activity-modal-card {
+    background-color: #2b00aa;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    min-height: 220px;
+    height: 100%; /* ДОБАВЛЕНО: чтобы карточки в ряду были одинаковой высоты */
+    box-sizing: border-box; /* ДОБАВЛЕНО */
+}
+
+.activity-modal-card__title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.activity-modal-card__categories {
+    margin: 10px 0;
+}
+
+.activity-modal-card__category-tag {
+    display: inline-block;
+    background-color: #5d3fd3;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin: 2px;
+}
+
+/* Кнопка "Участвовать" внутри карточки */
+.activity-modal-card__apply-button {
+    margin-top: auto;
+    background-color: #ffffff;
+    color: #2b00aa;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.activity-modal-card__apply-button:hover {
+    background-color: #e0e0e0;
+}
+
+.activity-modal-card__apply-button:disabled {
+    background-color: #888888;
+    color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+@media (max-width: 650px) {
+    .event-modal__activities-grid {
+        grid-template-columns: 1fr;
+        max-height: 50vh;
+    }
+}

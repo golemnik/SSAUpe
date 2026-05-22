@@ -1,0 +1,100 @@
+/* Основа диалогового окна фильтрации */
+.confirm-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    background-color: var(--color-overlay);
+    pointer-events: auto;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Класс для показа окна */
+.confirm-dialog--open {
+    display: grid;
+    place-items: center;
+}
+
+/* Контейнер диалога */
+.confirm-dialog__container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background-color: var(--color-ice-effect);
+    border-radius: 16px;
+    max-width: 700px;
+    margin: 5% auto;
+    width: 90%;
+    max-height: 60vh;
+    pointer-events: auto;
+}
+
+/* Шапка диалога: заголовок + кнопка закрытия */
+.confirm-dialog__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 25px;
+}
+
+/* Заголовок диалога */
+.confirm-dialog__headline {
+    font-size: var(--font-size-h3);
+    color: var(--color-galactic-highway);
+}
+
+/* Кнопка закрытия (крестик) */
+.confirm-dialog__close-button {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Линии крестика */
+.confirm-dialog__close-line {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: var(--color-galactic-highway);
+    border-radius: 2px;
+}
+
+/* Первая линия (повёрнута на 45°) */
+.confirm-dialog__close-line:first-child {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+/* Вторая линия (повёрнута на -45°) */
+.confirm-dialog__close-line:last-child {
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.confirm-dialog__content {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    justify-items: center;
+    align-items: center;
+}
+
+.confirm-dialog__message {
+    font-size: var(--font-size-h3);
+    color: var(--color-galactic-highway);
+}
+
+.confirm-dialog__ok {
+    min-width: 200px;
+    border-radius: 20px;
+    padding: 15px 10px;
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+}

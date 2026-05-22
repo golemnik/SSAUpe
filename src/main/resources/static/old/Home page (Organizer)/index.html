@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Волонтёрство — Волонтёр</title>
-    <meta name="description" content="Главная страница системы для авторизованных волонтёров." />
+    <title>Волонтёрство — Организатор</title>
+    <meta name="description" content="Главная страница системы для авторизованных организаторов." />
     <link href="./styles/index.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="./public/favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./public/favicon/favicon.svg" />
     <link rel="shortcut icon" href="./public/favicon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="./public/favicon/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Volunteer" />
+    <meta name="apple-mobile-web-app-title" content="AboutTheDevelopers" />
 </head>
 
 <body>
@@ -20,7 +20,7 @@
         <div class="header__container container">
 
             <!-- Заголовок страницы -->
-            <h1 class="header__headline headline visually-hidden">Волонтёрство — Волонтёр</h1>
+            <h1 class="header__headline headline visually-hidden">Волонтёрство — Организатор</h1>
 
             <div class="header__content-group">
                 <!-- Логотип -->
@@ -95,37 +95,48 @@
         </div>
     </header>
 
-    <!-- Hero-секция (приветственная) с якорем "Краткое описание проекта" -->
-    <section id="about-project" class="hero">
+    <!-- Hero-секция (приветственная) -->
+    <section class="hero">
         <div class="hero__container container">
+
+            <!-- Левая колонка: текст -->
             <div class="hero__content">
                 <h2 class="hero__headline headline">«Приложение для помощи организации мероприятий с привлечением
                     волонтёров»</h2>
+
                 <hr class="hero__text-division">
+
                 <p class="hero__text">
                     Платформа для автоматизации процессов поиска, координации и управления волонтёрской помощью. Система
                     объединяет организаторов и добровольцев, упрощая создание мероприятий, подачу заявок и контроль
                     участия.
                 </p>
             </div>
+
+            <!-- Правая колонка: изображение -->
             <div class="hero__image">
                 <h2 class="hero__decoration-text headline">Добро пожаловать!</h2>
-                <img src="./public/images/hero-volunteers.png" alt="Волонтёры помогают людям" class="hero__img"
-                    width="651" height="442" />
+
+                <img src="./public/images/hero-volunteers.png"
+                    alt="Volunteers help people: a group of young people participate in a charity event."
+                    class="hero__img" width="651" height="442" />
             </div>
+
         </div>
     </section>
 
     <!-- Основное содержание страницы -->
     <main class="main">
-        <!-- Секция примеров мероприятий (карточки) с якорем "Примеры мероприятий" -->
-        <section id="events-examples" class="cards-examples">
+
+        <!-- Секция примеров мероприятий (карточки) -->
+        <section class="cards-examples">
             <div class="cards-examples__container container">
                 <div class="cards-examples__card-place">
 
-                    <!-- Статичная Карточка 1 -->
+                    <!-- Карточка мероприятия 1 (Эко-субботник, набор закрыт) -->
                     <div class="event-card event-card--closed">
                         <h3 class="event-card__headline headline">Эко-субботник «Чистый берег»</h3>
+
                         <p class="event-card__organizer">ЭкоСтарт</p>
 
                         <div class="event-card__categories">
@@ -135,6 +146,7 @@
                         </div>
 
                         <p class="event-card__datetime">15–17 мая 2026, 10:00 – 16:00</p>
+
                         <p class="event-card__location">г. Самара, набережная, спуск у Ладьи</p>
 
                         <div class="event-card__volunteers">
@@ -145,9 +157,10 @@
                         <button class="button event-card__button" disabled>Набор завершён</button>
                     </div>
 
-                    <!-- Статичная Карточка 2 -->
+                    <!-- Карточка мероприятия 2 (Фестиваль, набор закрыт) -->
                     <div class="event-card event-card--closed">
                         <h3 class="event-card__headline headline">Фестиваль «Добрая Встреча»</h3>
+
                         <p class="event-card__organizer">Ресурсный центр добровольчества</p>
 
                         <div class="event-card__categories">
@@ -157,6 +170,7 @@
                         </div>
 
                         <p class="event-card__datetime">5–7 июня 2026, 09:00 – 20:00</p>
+
                         <p class="event-card__location">г. Самара, Парк им. Гагарина</p>
 
                         <div class="event-card__volunteers">
@@ -167,9 +181,10 @@
                         <button class="button event-card__button" disabled>Набор завершён</button>
                     </div>
 
-                    <!-- Статичная Карточка 3 -->
-                    <div class="event-card event-card--closed">
+                    <!-- Карточка мероприятия 3 (Марафон онлайн, набор открыт) -->
+                    <div class="event-card event-card--open">
                         <h3 class="event-card__headline headline">Марафон «Помощь рядом»</h3>
+
                         <p class="event-card__organizer">Федерация цифрового волонтёрства</p>
 
                         <div class="event-card__categories">
@@ -179,6 +194,7 @@
                         </div>
 
                         <p class="event-card__datetime">20 июня 2026, 12:00 – 15:00</p>
+
                         <p class="event-card__location">Онлайн-платформа</p>
 
                         <div class="event-card__volunteers">
@@ -193,7 +209,6 @@
             </div>
         </section>
 
-
         <!-- Медиа-блок с изображением волонтёров за компьютером -->
         <section class="media-block">
             <div class="media-block__container container">
@@ -202,12 +217,50 @@
                     class="media-block__image" width="1440" height="500">
             </div>
         </section>
+
+        <!-- Секция заявок волонтёров -->
+        <section id="applications" class="applications-section">
+            <div class="applications-section__container container">
+                <h2 class="applications-section__headline headline">Заявки волонтёров</h2>
+
+                <!-- Контейнер для списка заявок -->
+                <div id="applicationsListContainer" class="applications-list">
+                    <!-- Сюда будут добавляться заявки -->
+                    <!-- Сообщение, если заявок нет -->
+                    <div id="emptyApplicationsMessage" class="empty-applications-message">
+                        <p>Заявок пока нет.</p>
+
+                        <p>Когда волонтёры подадут заявки, они появятся здесь</p>
+                    </div>
+                </div>
+
+                <!-- Пустой шаблон заявки (скрыт, используется для клонирования) -->
+                <template id="applicationCardTemplate">
+                    <div class="application-card">
+                        <div class="application-card__header">
+                            <h3 class="application-card__volunteer"></h3>
+
+                            <span class="application-card__status"></span>
+                        </div>
+
+                        <p class="application-card__event"></p>
+
+                        <p class="application-card__date"></p>
+
+                        <div class="application-card__actions">
+                            <button class="application-card__approve">Принять</button> 
+                            <button class="application-card__reject">Отклонить</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </section>
+
         <!-- Секция каталога событий -->
         <section id="events-catalog" class="events-catalog">
             <div class="events-catalog__container container">
                 <h2 class="events-catalog__headline headline">Каталог событий</h2>
 
-                <!-- Строка поиска и фильтрации -->
                 <div class="events-catalog__search-bar">
                     <button class="filter-button" id="openFilterBtn">
                         <span class="filter-button__line"></span>
@@ -215,10 +268,63 @@
                         <span class="filter-button__line"></span>
                     </button>
 
-                    <input type="text" id="searchInput" class="search-input" placeholder="Поиск">
+                    <div class="search-wrapper">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Поиск событий">
+                        <button class="search-button button" id="searchBtn">
+                            <img src="/images/Search.png" alt="Поиск" class="search-button__search-icon" width="30" height="15">
+                        </button>
+                    </div>
+                </div>
 
-                    <button class="search-button button" id="searchBtn">
-                        <img src="/images/Search.png" alt="Поиск" class="search-button__search-icon" width="30">
+                <!-- ВАШ КОД ФИЛЬТРА -->
+                <div id="filterDialog" class="filter-dialog" style="display: none; position: absolute; z-index: 100; background: white; padding: 20px; border-radius: 10px; border: 2px solid #5d3fd3; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    <div class="filter-dialog__container">
+                        <div class="filter-dialog__header" style="display: flex; justify-content: space-between;">
+                            <h3 class="filter-dialog__headline headline">Фильтр мероприятий</h3>
+                            <button class="filter-dialog__close-button" id="closeFilterBtn" style="cursor: pointer; border: none; background: none; font-size: 20px;">&times;</button>
+                        </div>
+
+                        <div class="filter-dialog__content">
+                            <!-- Направление (сверяйте value с тем, как они записаны у вас в БД) -->
+                            <div class="filter-section">
+                                <h4>Направление деятельности</h4>
+                                <label><input type="checkbox" name="direction" value="Экология"> Экология</label><br>
+                                <label><input type="checkbox" name="direction" value="Спорт"> Спорт</label><br>
+                                <label><input type="checkbox" name="direction" value="Культура"> Культура</label><br>
+                                <label><input type="checkbox" name="direction" value="Социальная помощь"> Социальная помощь</label><br>
+                            </div>
+
+                            <!-- Формат -->
+                            <div class="filter-section" style="margin-top: 15px;">
+                                <h4>Формат участия</h4>
+                                <label><input type="checkbox" name="format" value="Очный"> Очный</label><br>
+                                <label><input type="checkbox" name="format" value="Дистанционный"> Дистанционный</label><br>
+                                <label><input type="checkbox" name="format" value="Смешанный"> Смешанный</label>
+                            </div>
+                        </div>
+
+                        <div class="filter-dialog__footer" style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button id="resetFiltersBtn" class="button">Сбросить</button>
+                            <button id="applyFiltersBtn" class="button" style="background-color: #2b00aa; color: white;">Применить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Контейнер для списка -->
+                <div id="eventsListContainer" class="events-list" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+                    <div id="emptyEventsMessage" class="empty-events-message" style="width: 100%; text-align: center; background: #2b00aa; color: white; padding: 30px; border-radius: 15px;">
+                        <p>У вас пока нет созданных событий.</p>
+                        <p>Загляните позже — организаторы обязательно добавят новые события.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+                <!-- Кнопка добавления события -->
+                <div class="events-catalog__add-button-wrapper">
+                    <button id="addEventButton" class="add-event-button button button--primary">
+                        Добавить событие
                     </button>
                 </div>
 
@@ -229,7 +335,7 @@
                     <div id="emptyEventsMessage" class="empty-events-message">
                         <p>У вас пока нет созданных событий.</p>
 
-                        <p>Загляните позже — организаторы обязательно добавят новые события.</p>
+                        <p>Нажмите кнопку «Добавить событие», чтобы создать первое мероприятие.</p>
                     </div>
                 </div>
 
@@ -252,40 +358,24 @@
                                 <span class="event-item__status"></span>
                             </div>
                         </div>
+
+                        <button class="event-item__edit-button button button--secondary">Редактировать</button>
                     </div>
                 </template>
             </div>
         </section>
-
-        <!-- Блок описания возможностей системы -->
-        <section id="capabilities" class="descr-of-capabilities">
-            <div class="descr-of-capabilities__container container">
-                <div class="descr-of-capabilities__inner">
-                    <img src="./public/images/loading-with-eyes.png" alt="Иллюстрация волонтёрской деятельности"
-                        class="descr-of-capabilities__logo logo" width="186" height="183">
-
-                    <p class="descr-of-capabilities__text">Создайте личный кабинет с портфолио ваших навыков (опыт,
-                        языки, компетенции). Находите мероприятия по трём критериям: территориальный охват, направление
-                        деятельности (спорт, экология, культура, медицина, образование и др.) и формат участия
-                        (очно/онлайн).
-                    </p>
-
-                    <p class="descr-of-capabilities__text">Отправляйте заявки на интересующие вас мероприятия в один
-                        клик. Отслеживайте статус вашей заявки («На рассмотрении», «Подтверждена», «Отклонена») и
-                        получайте уведомления об изменениях.</p>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <!-- Подвал сайта с якорем "Дополнительная информация" -->
-    <footer id="additional-info" class="footer">
+    <!-- Подвал сайта -->
+    <footer class="footer">
         <div class="footer__container container">
             <h2 class="footer__headline headline">© 2026 Приложение для помощи организации мероприятий с привлечением
                 волонтёров</h2>
 
+            <!-- Блок "О проекте" -->
             <div class="footer__content">
                 <h3 class="footer__label">О проекте:</h3>
+
                 <p class="footer__text">Информационная система разработана в рамках курсового проектирования по
                     дисциплине «Программная инженерия» на базе кафедры программных систем Самарского университета
                     (Институт информатики и кибернетики). Проект реализует двухролевую модель доступа (Администратор /
@@ -293,8 +383,10 @@
                     законодательством РФ.</p>
             </div>
 
+            <!-- Блок правовой информации -->
             <div class="footer__content">
                 <h3 class="footer__label">Правовая информация:</h3>
+
                 <p class="footer__text">Вся информация носит ознакомительный характер в рамках учебного проекта.</p>
             </div>
         </div>

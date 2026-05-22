@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ru" dir="ltr">
+<html lang="ru" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Регистрация</title>
     <meta name="description" content="На этой странице представлен процесс регистрации системы." />
-    <link href="/css/registration_styles/index.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link th:href="@{/css/registration_styles/index.css}" rel="stylesheet" />
+    <link rel="icon" type="image/png" th:href="@{/favicon/favicon-96x96.png}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon/favicon.svg}" />
+    <link rel="shortcut icon" th:href="@{/favicon/favicon.ico}" />
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/favicon/apple-touch-icon.png}" />
     <meta name="apple-mobile-web-app-title" content="AboutTheDevelopers" />
 
     <style>
@@ -30,6 +30,18 @@
             font-size: 16px !important;
             transition: background-color 5000s ease-in-out 0s;
         }
+
+        /* Прячем системный инпут, чтобы убрать текст "Файл не выбран" */
+        .reg-form__photo-input {
+            display: none;
+        }
+
+        /* Делаем label кликабельным как кнопку */
+        .reg-form__photo-button {
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -41,15 +53,15 @@
             <div class="reg-card__logo logo">
                 <img src="/images/logo.png" alt="Volunteering" width="200" height="50" />
             </div>
-            <a th:href="@{home/about_devs}" id="sistemButton" class="reg-card__sistem-button button">?</a>
+            <a th:href="@{/home/about_devs}" id="sistemButton" class="reg-card__sistem-button button">?</a>
         </div>
 
         <div class="reg-card__body">
             <h1 class="reg-card__headline headline">Регистрация</h1>
-            <p class="reg-card__text">Уже есть аккаунт? <a th:href="@{login}" class="reg-card__auth-link">Авторизоваться</a></p>
+            <p class="reg-card__text">Уже есть аккаунт? <a th:href="@{/login}" class="reg-card__auth-link">Авторизоваться</a></p>
         </div>
 
-        <form class="reg-form" id="registrationForm" th:action="@{registration}" th:object="${userForm}" method="POST" enctype="multipart/form-data" novalidate>
+        <form class="reg-form" id="registrationForm" th:action="@{/registration}" th:object="${userForm}" method="POST" enctype="multipart/form-data" novalidate>
 
             <div class="reg-form__photo-block">
                 <div class="reg-form__photo-area">
@@ -57,8 +69,10 @@
                     <span class="reg-form__photo-hint">200×200 – 1024×1024 (JPEG, PNG, WEBP)</span>
                 </div>
                 <div class="reg-form__photo-upload">
-                    <input type="file" id="avatar" name="profile_picture" accept="image/jpeg,image/png,image/webp" class="reg-form__photo-input" />
-                    <span class="reg-form__photo-button">Загрузить</span>
+                    <!-- Заменил класс на reg-form__photo-input -->
+                    <input type="file" id="avatar" name="avatarFile" accept="image/jpeg,image/png,image/webp" class="reg-form__photo-input" />
+                    <!-- ИСПОЛЬЗУЕМ LABEL вместо SPAN -->
+                    <label for="avatar" class="reg-form__photo-button">Загрузить</label>
                 </div>
             </div>
 
@@ -189,176 +203,6 @@
     </div>
 </section>
 
-<script>
-    const volunteerInput = document.getElementById('volunteer_id');
-    const phoneInput = document.getElementById('phone');
-    const fioInputs = [document.getElementById('lastname'), document.getElementById('firstname'), document.getElementById('patronymic')];
-
-    const volunteerPrefix = 'ВК-';
-    const phonePrefix = '+';
-
-    // Функция фокуса для книжки
-    volunteerInput.addEventListener('focus', function() {
-        if (this.value === '') {
-            this.value = volunteerPrefix;
-        }
-    });
-
-    // Функция выхода из поля для книжки (если остался только префикс — очищаем)
-    volunteerInput.addEventListener('blur', function() {
-        if (this.value === volunteerPrefix) {
-            this.value = '';
-        }
-    });
-
-    // Функция фокуса для телефона
-    phoneInput.addEventListener('focus', function() {
-        if (this.value === '') {
-            this.value = phonePrefix;
-        }
-    });
-
-    // Функция выхода из поля для телефона
-    phoneInput.addEventListener('blur', function() {
-        if (this.value === phonePrefix) {
-            this.value = '';
-        }
-    });
-
-
-    // 1. ФИО: Только буквы и дефис
-    fioInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ-]/g, '');
-        });
-    });
-
-    // 2. ТЕЛЕФОН: Фильтрация ввода
-    phoneInput.addEventListener('input', function() {
-        // Если поле пустое (например, пользователь стер всё выделением), прерываем, фокус/блюр разберутся
-        if (this.value === '') return;
-
-        if (!this.value.startsWith(phonePrefix)) {
-            this.value = phonePrefix;
-            return;
-        }
-        const digits = this.value.substring(phonePrefix.length).replace(/\D/g, '');
-        this.value = phonePrefix + digits;
-    });
-
-    phoneInput.addEventListener('keydown', function(e) {
-        if (this.selectionStart < phonePrefix.length && (e.key === 'Backspace' || e.key === 'Delete')) {
-            e.preventDefault();
-        }
-    });
-
-    // 3. ВОЛОНТЁРСКАЯ КНИЖКА: Фильтрация ввода
-    volunteerInput.addEventListener('input', function() {
-        if (this.value === '') return;
-
-        if (!this.value.startsWith(volunteerPrefix)) {
-            this.value = volunteerPrefix;
-            return;
-        }
-        const digitsPart = this.value.substring(volunteerPrefix.length).replace(/\D/g, '');
-        this.value = volunteerPrefix + digitsPart;
-    });
-
-    volunteerInput.addEventListener('keydown', function(e) {
-        if (this.selectionStart < volunteerPrefix.length && (e.key === 'Backspace' || e.key === 'Delete')) {
-            e.preventDefault();
-        }
-    });
-
-
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-        let isValid = true;
-
-        // Очистка предыдущих ошибок
-        document.querySelectorAll('.js-error').forEach(el => el.textContent = '');
-        document.querySelectorAll('.reg-form__input').forEach(el => {
-            el.classList.remove('reg-form__input--error');
-            const group = el.closest('.reg-form__group');
-            if(group) group.classList.remove('reg-form__group--error');
-        });
-
-        // Функция отображения ошибок
-        let showError = function(inputId, message) {
-            const input = document.getElementById(inputId);
-            const group = input.closest('.reg-form__group');
-            const errorDiv = document.getElementById('error-' + inputId);
-
-            if (input && group && errorDiv) {
-                input.classList.add('reg-form__input--error');
-                group.classList.add('reg-form__group--error');
-                errorDiv.textContent = message;
-            }
-            isValid = false;
-        };
-
-        // 1. Проверка ФИО
-        const lastname = document.getElementById('lastname').value.trim();
-        if (lastname === '') showError('lastname', 'Фамилия не может быть пустой');
-
-        const firstname = document.getElementById('firstname').value.trim();
-        if (firstname === '') showError('firstname', 'Имя не может быть пустым');
-
-        // 2. Проверка Логина и Пароля
-        const login = document.getElementById('login').value.trim();
-        if (login === '') {
-            showError('login', 'Логин не может быть пустым');
-        } else if (login.length < 3 || login.length > 20) {
-            showError('login', 'Логин должен быть от 3 до 20 символов');
-        }
-
-        const password = document.getElementById('password').value;
-        if (password === '') {
-            showError('password', 'Пароль не может быть пустым');
-        } else if (password.length < 8 || password.length > 25) {
-            showError('password', 'Пароль должен быть от 8 до 25 символов');
-        }
-
-        const passwordConfirm = document.getElementById('password_confirm').value;
-        if (password !== '' && password !== passwordConfirm) {
-            showError('password_confirm', 'Пароли не совпадают');
-        }
-
-        // 3. Проверка Даты рождения
-        const birthdate = document.getElementById('birthdate').value;
-        if (birthdate === '') {
-            showError('birthdate', 'Укажите дату рождения');
-        }
-
-        // 4. Проверка Телефона (Обязательное + длина)
-        const phone = phoneInput.value.trim();
-        if (phone === '' || phone === phonePrefix) {
-            showError('phone', 'Номер телефона не может быть пустым');
-        } else if (!/^\+\d{11}$/.test(phone)) {
-            showError('phone', 'Телефон должен содержать ровно 11 цифр после знака "+" (например: +79991234567)');
-        }
-
-        // 5. Проверка Email
-        const email = document.getElementById('email').value.trim();
-        if (email === '') {
-            showError('email', 'Электронная почта не может быть пустой');
-        } else if (!email.includes('@')) {
-            showError('email', 'Электронная почта должна содержать символ "@"');
-        }
-
-        // 6. Проверка волонтёрской книжки (Обязательное + длина)
-        const volunteerId = volunteerInput.value.trim();
-        if (volunteerId === '' || volunteerId === volunteerPrefix) {
-            showError('volunteer_id', 'Номер волонтёрской книжки не может быть пустым');
-        } else if (volunteerId.length !== 13) {
-            showError('volunteer_id', 'После префикса "ВК-" должно быть введено ровно 10 цифр');
-        }
-
-        // Отмена отправки формы при наличии ошибок
-        if (!isValid) {
-            event.preventDefault();
-        }
-    });
-</script>
+<script th:src="@{/js/registration.js}"></script>
 </body>
-
 </html>

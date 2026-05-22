@@ -17,7 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -52,14 +53,13 @@ public class GeneralController {
         return "/home/about_system";
     }
 
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
+
         return "login";
     }
-
 
     @GetMapping(value = "/registration")
     public String registration(Model model) {
@@ -68,12 +68,26 @@ public class GeneralController {
     }
 
     @PostMapping(value = "/registration")
-    public String registration(@ModelAttribute("userForm") SystemUser clientForm, BindingResult bindingResult, Model model) {
+    public String registration(@ModelAttribute("userForm") SystemUser clientForm,
+                               @RequestParam(value = "avatarFile", required = false) MultipartFile file,
+                               BindingResult bindingResult, Model model) {
         userValidator.validate(clientForm, bindingResult);
 
+        SystemUser existingUser = userRepository.findByUsername(clientForm.getUsername());
+        if (existingUser != null) {
+            bindingResult.rejectValue("username", "error.userForm", "Пользователь с таким логином уже существует");
+        }
         if (bindingResult.hasErrors()) {
             System.out.println("Валидация не пройдена. Обнаружены ошибки:");
             return "registration";
+        }
+
+        try {
+            if (file != null && !file.isEmpty()) {
+                clientForm.setProfile_picture(file.getBytes());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         clientForm.setRoles(roleRepository.findByName("USER"));
@@ -99,16 +113,6 @@ public class GeneralController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/volunteer_home", method = RequestMethod.GET)
-    public String volunteerHome(Model model) {
-        return "volunteer_home";
-    }
-
-    @RequestMapping(value = "/organizer_home", method = RequestMethod.GET)
-    public String organizerHome(Model model) {
-        return "organizer_home";
-    }
-
     @PostMapping("/api/applications/cancel")
     @ResponseBody
     public ResponseEntity<?> cancelApplication(@RequestBody CancelRequest payload, Authentication authentication) {
@@ -118,36 +122,27 @@ public class GeneralController {
             return ResponseEntity.status(401).body(response);
         }
 
-        if (payload == null || payload.getEventId() == null || payload.getEventId().trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        // ИСПРАВЛЕНИЕ: Переводим в Integer, так как в сущностях Activity и Application ID является Integer!
-        Integer eventId;
+        long eventId;
         try {
-            eventId = Integer.parseInt(payload.getEventId().trim());
-            System.out.println("[LOG] Успешно распарсен ID активности как Integer: " + eventId);
-        } catch (NumberFormatException e) {
+            eventId = Long.parseLong(payload.getEventId().trim());
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(response);
         }
 
-        String currentUsername = authentication.getName();
-        SystemUser currentUser = userRepository.findByUsername(currentUsername);
+        SystemUser currentUser = userRepository.findByUsername(authentication.getName());
 
         if (currentUser != null) {
             List<Application> userApplications = applicationRepository.findByVolunteer(currentUser);
 
-            // Теперь это сравнение (Integer сопоставляется с Integer) вернет true!
             Application appToCancel = userApplications.stream()
-                    .filter(a -> a.getActivity() != null && a.getActivity().getId().equals(eventId))
+                    .filter(a -> a.getActivity() != null && a.getActivity().getId().longValue() == eventId)
+                    .filter(a -> a.getStatus() != ApplicationStatus.CANCELED)
                     .findFirst()
                     .orElse(null);
 
             if (appToCancel != null) {
                 appToCancel.setStatus(ApplicationStatus.CANCELED);
                 applicationRepository.save(appToCancel);
-
-                System.out.println("[LOG SUCCESS] Статус заявки успешно изменен на CANCELED в БД.");
                 response.put("success", true);
                 return ResponseEntity.ok(response);
             }
@@ -156,7 +151,6 @@ public class GeneralController {
         response.put("success", false);
         return ResponseEntity.badRequest().body(response);
     }
-
 
     @GetMapping("/api/notifications/events")
     @ResponseBody
@@ -176,7 +170,6 @@ public class GeneralController {
             for (Application app : userApplications) {
                 if (app.getActivity() == null) continue;
 
-                // ИСПРАВЛЕНИЕ: Если заявка отменена волонтером, полностью скрываем ее из списков уведомлений
                 if (app.getStatus() == ApplicationStatus.CANCELED) {
                     continue;
                 }
@@ -202,15 +195,14 @@ public class GeneralController {
                 String dateStr = (event != null) ? event.getStartDate() + " - " + event.getEndDate() : "";
                 notification.put("datetime", dateStr + " | " + activity.getStartTime() + " - " + activity.getEndTime());
 
-                notification.put("format", activity.getFormat());
-                notification.put("direction", activity.getDirection());
+                notification.put("format", event != null ? event.getFormat() : null);
+                notification.put("direction", event != null ? event.getDirection() : null);
 
                 result.add(notification);
             }
         }
         return result;
     }
-
 
     @PostMapping("/api/applications/apply")
     @ResponseBody
@@ -223,7 +215,7 @@ public class GeneralController {
             return ResponseEntity.status(401).body(response);
         }
 
-        Long activityId = Long.parseLong(payload.get("eventId").toString());
+        long activityId = Long.parseLong(payload.get("eventId").toString());
         String currentUsername = authentication.getName();
         SystemUser currentUser = userRepository.findByUsername(currentUsername);
         Activity activity = activityRepository.findById(activityId).orElse(null);
@@ -234,31 +226,27 @@ public class GeneralController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        // АЛЬТЕРНАТИВА А2: Проверяем, нет ли уже АКТИВНОЙ (не отмененной) заявки на это событие
         List<Application> existingApps = applicationRepository.findByVolunteer(currentUser);
+
         boolean alreadyApplied = existingApps.stream()
-                .anyMatch(a -> a.getActivity().getId().equals(activityId) && a.getStatus() != ApplicationStatus.CANCELED);
+                .anyMatch(a -> a.getActivity().getId().longValue() == activityId && a.getStatus() != ApplicationStatus.CANCELED);
 
         if (alreadyApplied) {
             response.put("success", false);
-            response.put("reason", "A2");
             response.put("message", "Вы уже подали заявку на это мероприятие");
             return ResponseEntity.badRequest().body(response);
         }
 
-        // АЛЬТЕРНАТИВА А1: Набор участников окончен
         long acceptedCount = activity.getApplications() != null ?
                 activity.getApplications().stream().filter(a -> a.getStatus() == ApplicationStatus.ACCEPTED).count() : 0;
         if (activity.getMaxVolunteers() != null && acceptedCount >= activity.getMaxVolunteers()) {
             response.put("success", false);
-            response.put("reason", "A1");
             response.put("message", "Набор участников окончен");
             return ResponseEntity.badRequest().body(response);
         }
 
-        // Если пользователь ранее отменял заявку, а теперь подает снова — обновляем старую или создаем новую
         Application targetApp = existingApps.stream()
-                .filter(a -> a.getActivity().getId().equals(activityId) && a.getStatus() == ApplicationStatus.CANCELED)
+                .filter(a -> a.getActivity().getId().longValue() == activityId && a.getStatus() == ApplicationStatus.CANCELED)
                 .findFirst()
                 .orElse(null);
 
@@ -275,7 +263,6 @@ public class GeneralController {
 
         response.put("success", true);
         response.put("status", "На рассмотрении");
-        response.put("message", "Заявка успешно зарегистрирована в системе");
         return ResponseEntity.ok(response);
     }
 
@@ -299,6 +286,7 @@ public class GeneralController {
     @PostMapping("/profile_edit")
     public String updateProfile(@ModelAttribute("userForm") SystemUser updatedForm,
                                 @RequestParam(value = "experiences", required = false) List<String> experiences,
+                                @RequestParam(value = "avatarFile", required = false) MultipartFile file,
                                 Authentication authentication,
                                 BindingResult bindingResult) {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -333,9 +321,16 @@ public class GeneralController {
                     ParticipationExperience enumValue = ParticipationExperience.valueOf(expString.toUpperCase().trim());
                     databaseUser.getExperiences().add(enumValue);
                 } catch (IllegalArgumentException e) {
-                    // Игнорируем
                 }
             }
+        }
+
+        try {
+            if (file != null && !file.isEmpty()) {
+                databaseUser.setProfile_picture(file.getBytes());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         if (updatedForm.getPassword() != null && !updatedForm.getPassword().trim().isEmpty()) {
@@ -352,4 +347,186 @@ public class GeneralController {
         return "redirect:/volunteer_home";
     }
 
+    // --- ПОЛНОСТЬЮ ИЗМЕНЕННЫЙ МЕТОД (Теперь данные для карточек захардкожены) ---
+    @RequestMapping(value = "/volunteer_home", method = RequestMethod.GET)
+    public String volunteerHome(Model model, Authentication authentication) {
+
+        List<Map<String, Object>> top3Cards = new ArrayList<>();
+
+        // Карточка 1
+        Map<String, Object> card1 = new HashMap<>();
+        card1.put("activityId", -1L);
+        card1.put("title", "Эко-субботник «Чистый берег»");
+        card1.put("organizer", "ЭкоСтарт");
+        card1.put("description", "Очистка береговой линии от мусора."); // ДОБАВЛЕНО
+        card1.put("direction", "Экология");
+        card1.put("forces", "Муниципальный");
+        card1.put("format", "Очный");
+        card1.put("datetime", "15–17 мая 2026, 10:00 – 16:00");
+        card1.put("location", "г. Самара, набережная, спуск у Ладьи");
+        card1.put("volunteersCurrent", 30);
+        card1.put("volunteersMax", 30);
+        card1.put("isClosed", true);
+        card1.put("text", "");
+        top3Cards.add(card1);
+
+        // Карточка 2
+        Map<String, Object> card2 = new HashMap<>();
+        card2.put("activityId", -2L);
+        card2.put("title", "Фестиваль «Добрая Встреча»");
+        card2.put("organizer", "Ресурсный центр добровольчества");
+        card2.put("description", "Помощь в организации городского фестиваля."); // ДОБАВЛЕНО
+        card2.put("direction", "Событийное");
+        card2.put("forces", "Региональный");
+        card2.put("format", "Очный");
+        card2.put("datetime", "5–7 июня 2026, 09:00 – 20:00");
+        card2.put("location", "г. Самара, Парк им. Гагарина");
+        card2.put("volunteersCurrent", 50);
+        card2.put("volunteersMax", 50);
+        card2.put("isClosed", true);
+        card2.put("text", "");
+        top3Cards.add(card2);
+
+        // Карточка 3
+        Map<String, Object> card3 = new HashMap<>();
+        card3.put("activityId", -3L);
+        card3.put("title", "Марафон «Помощь рядом»");
+        card3.put("organizer", "Федерация цифрового волонтёрства");
+        card3.put("description", "Онлайн-поддержка социальных проектов."); // ДОБАВЛЕНО
+        card3.put("direction", "Социальная помощь");
+        card3.put("forces", "Всероссийский");
+        card3.put("format", "Онлайн");
+        card3.put("datetime", "20 июня 2026, 12:00 – 15:00");
+        card3.put("location", "Онлайн-платформа");
+        card3.put("volunteersCurrent", 15);
+        card3.put("volunteersMax", 100);
+        card3.put("isClosed", true); // Сделал true, чтобы кнопка была "Набор завершён"
+        card3.put("text", "");
+        top3Cards.add(card3);
+
+        model.addAttribute("topActivities", top3Cards);
+        return "volunteer_home";
+    }
+
+    @GetMapping("/api/catalog/events")
+    @ResponseBody
+    public List<Map<String, Object>> getAllCatalogEvents(Authentication authentication) {
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        SystemUser currentUser = null;
+        List<Application> userApplications = new ArrayList<>();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            currentUser = userRepository.findByUsername(authentication.getName());
+            if (currentUser != null) {
+                userApplications = applicationRepository.findByVolunteer(currentUser);
+            }
+        }
+
+        List<Activity> allActivities = activityRepository.findAll();
+        Map<Long, Map<String, Object>> eventsMap = new HashMap<>();
+
+        for (Activity act : allActivities) {
+            Event event = act.getEvent();
+            if (event == null) continue;
+
+            long eventId = event.getId();
+            Map<String, Object> eventDto = eventsMap.get(eventId);
+
+            if (eventDto == null) {
+                eventDto = new HashMap<>();
+                eventDto.put("eventId", eventId);
+                eventDto.put("title", event.getName());
+                eventDto.put("description", event.getDescription() != null ? event.getDescription() : "Описание отсутствует");
+                eventDto.put("location", event.getLocation());
+
+                String dirStr = event.getDirection() != null ? event.getDirection().getDisplayName() : null;
+                String formStr = event.getFormat() != null ? event.getFormat().getDisplayName() : null;
+                String forceStr = event.getForces() != null ? event.getForces().getDisplayName() : null;
+
+                eventDto.put("direction", dirStr);
+                eventDto.put("format", formStr);
+                eventDto.put("forces", forceStr);
+
+                eventDto.put("directions", dirStr != null ? Collections.singletonList(dirStr) : new ArrayList<>());
+                eventDto.put("formats", formStr != null ? Collections.singletonList(formStr) : new ArrayList<>());
+                eventDto.put("territories", forceStr != null ? Collections.singletonList(forceStr) : new ArrayList<>());
+
+                String dateStr = formatRussianDate(event.getStartDate());
+                String endStr = formatRussianDate(event.getEndDate());
+                if (!dateStr.equals(endStr) && !endStr.isEmpty()) {
+                    dateStr += " – " + endStr;
+                }
+                eventDto.put("datetime", dateStr);
+
+                eventDto.put("activities", new ArrayList<Map<String, Object>>());
+                eventsMap.put(eventId, eventDto);
+            }
+
+            Map<String, Object> actDto = new HashMap<>();
+            actDto.put("activityId", act.getId());
+            actDto.put("title", act.getName());
+
+            java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("d MMMM yyyy", new java.util.Locale("ru"));
+            java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
+
+            String startDateStr = act.getStartTime() != null ? act.getStartTime().format(dateFormatter) : "";
+            String endDateStr = act.getEndTime() != null ? act.getEndTime().format(dateFormatter) : "";
+
+            String actDateStr = startDateStr;
+            if (!startDateStr.equals(endDateStr) && !endDateStr.isEmpty()) {
+                actDateStr += " – " + endDateStr;
+            }
+            if (actDateStr.isEmpty()) {
+                actDateStr = "Дата не указана";
+            }
+
+// 3. Достаем время (Например: "18:00 - 20:00")
+            String startTimeStr = act.getStartTime() != null ? act.getStartTime().format(timeFormatter) : "";
+            String endTimeStr = act.getEndTime() != null ? act.getEndTime().format(timeFormatter) : "";
+            String actTimeStr = startTimeStr + " – " + endTimeStr;
+
+// 4. Кладем в JSON раздельно!
+            actDto.put("date", actDateStr);
+            actDto.put("time", actTimeStr);
+
+            long maxVols = act.getMaxVolunteers() != null ? act.getMaxVolunteers() : 0;
+            long acceptedCount = act.getApplications() != null ?
+                    act.getApplications().stream().filter(a -> a.getStatus() == ApplicationStatus.ACCEPTED).count() : 0;
+
+            actDto.put("volunteersMax", maxVols);
+            actDto.put("volunteersCurrent", acceptedCount);
+            actDto.put("isClosed", maxVols > 0 && acceptedCount >= maxVols);
+
+            Application userApp = userApplications.stream()
+                    .filter(a -> a.getActivity().getId().longValue() == act.getId().longValue() && a.getStatus() != ApplicationStatus.CANCELED)
+                    .findFirst()
+                    .orElse(null);
+
+            if (userApp != null) {
+                String statusRu = userApp.getStatus() == ApplicationStatus.ACCEPTED ? "Одобрена" :
+                        userApp.getStatus() == ApplicationStatus.REJECTED ? "Отклонена" : "На рассмотрении";
+                actDto.put("userStatus", statusRu);
+            } else {
+                actDto.put("userStatus", null);
+            }
+
+            ((List<Map<String, Object>>) eventDto.get("activities")).add(actDto);
+        }
+
+        result.addAll(eventsMap.values());
+        return result;
+    }
+
+    private String formatRussianDate(Object dateObj) {
+        if (dateObj == null) return "";
+        String str = dateObj.toString();
+        try {
+            java.time.LocalDate date = java.time.LocalDate.parse(str.length() > 10 ? str.substring(0, 10) : str);
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("d MMMM yyyy", new java.util.Locale("ru"));
+            return date.format(formatter);
+        } catch (Exception e) {
+            return str;
+        }
+    }
 }

@@ -1,4 +1,4 @@
-/* Фоновое затемнение при открытом меню */
+/* Основа меню */
 .menu-dialog {
     display: none;
     position: fixed;
