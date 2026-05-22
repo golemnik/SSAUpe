@@ -1,0 +1,81 @@
+@import url("./variables/fonts.css");
+@import url("./variables/colors.css");
+@import url("./variables/null.css");
+@import url("./variables/transition.css");
+
+@import url("./sections/header.css");
+@import url("./sections/notifications-dialog.css");
+@import url("./sections/menu-dialog.css");
+@import url("./sections/hero.css");
+@import url("./sections/cards-examples.css");
+@import url("./sections/media-block.css");
+@import url("./sections/applications.css");
+@import url("./sections/events-catalog.css");
+@import url("./sections/filter-dialog.css");
+@import url("./sections/event-form-modal.css");
+@import url("./sections/footer.css");
+
+/* Базовые стили шрифта с использованием переменных */
+body {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-white);
+  background-color: var(--color-galactic-highway);
+}
+
+.events-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
+  gap: 30px;
+  align-items: start;
+}
+
+.event-item {
+  width: 100%;
+}
+
+.event-card,
+.event-item__card {
+  width: 100%;
+  min-height: 360px;
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.event-item__categories,
+.event-card__categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+@media (max-width: 1100px) {
+  .events-list {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .events-list {
+    grid-template-columns: 1fr;
+  }
+}

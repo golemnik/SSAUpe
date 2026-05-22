@@ -104,6 +104,11 @@ public class GeneralController {
         return "volunteer_home";
     }
 
+    @RequestMapping(value = "/organizer_home", method = RequestMethod.GET)
+    public String organizerHome(Model model) {
+        return "organizer_home";
+    }
+
     @PostMapping("/api/applications/cancel")
     @ResponseBody
     public ResponseEntity<?> cancelApplication(@RequestBody CancelRequest payload, Authentication authentication) {

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Волонтёрство — Организатор</title>
+    <meta name="description" content="Главная страница системы для авторизованных организаторов." />
+    <link href="/css/organizer_home_styles/index.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="AboutTheDevelopers" />
+</head>
+
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="header__container container">
+
+            <!-- Заголовок страницы -->
+            <h1 class="header__headline headline visually-hidden">Волонтёрство — Организатор</h1>
+
+            <div class="header__content-group">
+                <!-- Логотип -->
+                <div class="header__logo logo">
+                    <img src="/images/logo.png" alt="Volunteering" width="200" height="50" />
+                </div>
+
+                <!-- Кнопка справочной информации -->
+                <a th:href="@{home/about_devs}" id="sistemButton" class="header__sistem-button button">?</a>
+
+                <!-- Кнопка вызова меню (бургер) -->
+                <div class="header__button-place">
+                    <button id="menuButton" class="menu-button button">
+                        <span class="menu-button__line"></span>
+                        <span class="menu-button__line"></span>
+                        <span class="menu-button__line"></span>
+                    </button>
+                </div>
+
+                <!-- Кнопка уведомлений -->
+                <button id="notificationsButton" class="header__notifications-button button">
+                    <img src="/images/Eye.png" alt="The eye looking forward." class="header__notifications-icon"
+                        width="35" height="20">
+                </button>
+
+                <!-- Кнопка редактирования профиля -->
+                <a th:href="@{/profile_edit}"  id="profileButton" class="header__profile-button button">
+                    <img src="/images/Smile.png" alt="Smiley." class="header__profile-icon" width="33"
+                        height="33">
+                </a>
+            </div>
+
+            <!-- Кнопка выхода -->
+            <div>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" value="Logout" id="logoutButton" class="header__logout-button button"> Выйти</button>
+                </form>
+            </div>
+
+            <!-- Диалоговое окно меню -->
+            <div class="menu-dialog" id="menuDialog">
+                <div class="menu-dialog__container">
+
+                    <!-- Шапка меню: заголовок + кнопка закрытия -->
+                    <div class="menu-dialog__header">
+                        <h2 class="menu-dialog__headline headline">Оглавление</h2>
+                        <button class="menu-dialog__close-button" type="button">
+                            <span class="menu-dialog__close-line"></span>
+                            <span class="menu-dialog__close-line"></span>
+                        </button>
+                    </div>
+
+                    <!-- Навигация с якорными ссылками -->
+                    <nav class="menu-dialog__nav">
+                        <ul class="menu-dialog__list">
+                            <li class="menu-dialog__item">
+                                <a href="#about-project" class="menu-dialog__link">Краткое описание проекта</a>
+                            </li>
+                            <li class="menu-dialog__item">
+                                <a href="#events-examples" class="menu-dialog__link">Примеры мероприятий</a>
+                            </li>
+                            <li class="menu-dialog__item">
+                                <a href="#applications" class="menu-dialog__link">Заявки волонтёров</a>
+                            </li>
+                            <li class="menu-dialog__item">
+                                <a href="#events-catalog" class="menu-dialog__link">Каталог событий</a>
+                            </li>
+                            <li class="menu-dialog__item">
+                                <a href="#additional-info" class="menu-dialog__link">Дополнительная информация</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Диалоговое окно уведомлений -->
+            <div id="notificationsDialog" class="notifications-dialog">
+                <div class="notifications-dialog__container">
+                    <div class="notifications-dialog__header">
+                        <h3 class="notifications-dialog__headline headline">Уведомления</h3>
+                        <button class="notifications-dialog__close-button">
+                            <span class="notifications-dialog__close-line"></span>
+                            <span class="notifications-dialog__close-line"></span>
+                        </button>
+                    </div>
+
+                    <!-- Контейнер для списка уведомлений (динамически заполняется) -->
+                    <div id="notificationsList" class="notifications-dialog__list">
+                        <!-- Сюда будут добавляться уведомления через JavaScript -->
+                        <!-- Сообщение, если уведомлений нет -->
+                        <div id="emptyNotificationsMessage" class="notifications-dialog__empty">
+                            <p>У вас пока нет уведомлений.</p>
+                        </div>
+                    </div>
+
+                    <!-- Шаблон уведомления -->
+                    <template id="notificationItemTemplate">
+                        <div class="notification-item">
+                            <p class="notification-item__text"></p>
+                            <time class="notification-item__time"></time>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero-секция (приветственная) -->
+    <section id="about-project" class="hero">
+        <div class="hero__container container">
+
+            <!-- Левая колонка: текст -->
+            <div class="hero__content">
+                <h2 class="hero__headline headline">«Приложение для помощи организации мероприятий с привлечением
+                    волонтёров»</h2>
+
+                <hr class="hero__text-division">
+
+                <p class="hero__text">
+                    Платформа для автоматизации процессов поиска, координации и управления волонтёрской помощью. Система
+                    объединяет организаторов и добровольцев, упрощая создание мероприятий, подачу заявок и контроль
+                    участия.
+                </p>
+            </div>
+
+            <!-- Правая колонка: изображение -->
+            <div class="hero__image">
+                <h2 class="hero__decoration-text headline">Добро пожаловать!</h2>
+
+                <img src="/images/hero-volunteers.png"
+                    alt="Volunteers help people: a group of young people participate in a charity event."
+                    class="hero__img" width="651" height="442" />
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Основное содержание страницы -->
+    <main class="main">
+        <!-- Секция примеров мероприятий (карточки) -->
+        <section id="events-examples" class="cards-examples">
+            <div class="cards-examples__container container">
+                <div class="cards-examples__card-place">
+
+                    <!-- Карточка мероприятия 1 (Эко-субботник, набор закрыт) -->
+                    <div class="event-card event-card--closed">
+                        <h3 class="event-card__headline headline">Эко-субботник «Чистый берег»</h3>
+
+                        <p class="event-card__organizer">ЭкоСтарт</p>
+
+                        <div class="event-card__categories">
+                            <span class="tag">Экология</span>
+                            <span class="tag">Муниципальный</span>
+                            <span class="tag">Очный</span>
+                        </div>
+
+                        <p class="event-card__datetime">15–17 мая 2026, 10:00 – 16:00</p>
+
+                        <p class="event-card__location">г. Самара, набережная, спуск у Ладьи</p>
+
+                        <div class="event-card__volunteers">
+                            <span class="event-card__volunteers-label">Волонтёров:</span>
+                            <span class="event-card__volunteers-count">30/30</span>
+                        </div>
+
+                        <button class="button event-card__button" disabled>Набор завершён</button>
+                    </div>
+
+                    <!-- Карточка мероприятия 2 (Фестиваль, набор закрыт) -->
+                    <div class="event-card event-card--closed">
+                        <h3 class="event-card__headline headline">Фестиваль «Добрая Встреча»</h3>
+
+                        <p class="event-card__organizer">Ресурсный центр добровольчества</p>
+
+                        <div class="event-card__categories">
+                            <span class="tag">Событийное</span>
+                            <span class="tag">Региональный</span>
+                            <span class="tag">Очный</span>
+                        </div>
+
+                        <p class="event-card__datetime">5–7 июня 2026, 09:00 – 20:00</p>
+
+                        <p class="event-card__location">г. Самара, Парк им. Гагарина</p>
+
+                        <div class="event-card__volunteers">
+                            <span class="event-card__volunteers-label">Волонтёров:</span>
+                            <span class="event-card__volunteers-count">50/50</span>
+                        </div>
+
+                        <button class="button event-card__button" disabled>Набор завершён</button>
+                    </div>
+
+                    <!-- Карточка мероприятия 3 (Марафон онлайн, набор открыт) -->
+                    <div class="event-card event-card--open">
+                        <h3 class="event-card__headline headline">Марафон «Помощь рядом»</h3>
+
+                        <p class="event-card__organizer">Федерация цифрового волонтёрства</p>
+
+                        <div class="event-card__categories">
+                            <span class="tag">Социальная помощь</span>
+                            <span class="tag">Всероссийский</span>
+                            <span class="tag">Онлайн</span>
+                        </div>
+
+                        <p class="event-card__datetime">20 июня 2026, 12:00 – 15:00</p>
+
+                        <p class="event-card__location">Онлайн-платформа</p>
+
+                        <div class="event-card__volunteers">
+                            <span class="event-card__volunteers-label">Волонтёров:</span>
+                            <span class="event-card__volunteers-count">15/100</span>
+                        </div>
+
+                        <button class="button event-card__button" disabled>Набор завершён</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция заявок волонтёров -->
+        <section id="applications" class="applications-section">
+            <div class="applications-section__container container">
+                <h2 class="applications-section__headline headline">Заявки волонтёров</h2>
+
+                <!-- Контейнер для списка заявок -->
+                <div id="applicationsListContainer" class="applications-list">
+                    <!-- Сюда будут добавляться заявки -->
+                    <!-- Сообщение, если заявок нет -->
+                    <div id="emptyApplicationsMessage" class="empty-applications-message">
+                        <p>Заявок пока нет.</p>
+
+                        <p>Когда волонтёры подадут заявки, они появятся здесь</p>
+                    </div>
+                </div>
+
+                <!-- Пустой шаблон заявки (скрыт, используется для клонирования) -->
+                <template id="applicationCardTemplate">
+                    <div class="application-card">
+                        <div class="application-card__header">
+                            <h3 class="application-card__volunteer"></h3>
+
+                            <span class="application-card__status"></span>
+                        </div>
+
+                        <p class="application-card__event"></p>
+
+                        <p class="application-card__date"></p>
+
+                        <div class="application-card__actions">
+                            <button class="application-card__approve">Принять</button>
+                            <button class="application-card__reject">Отклонить</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </section>
+
+        <!-- Секция каталога событий -->
+        <section id="events-catalog" class="events-catalog">
+            <div class="events-catalog__container container">
+                <h2 class="events-catalog__headline headline">Каталог событий</h2>
+
+                <!-- Строка поиска и фильтрации -->
+                <div class="events-catalog__search-bar">
+                    <button class="filter-button">
+                        <span class="filter-button__line"></span>
+                        <span class="filter-button__line"></span>
+                        <span class="filter-button__line"></span>
+                    </button>
+
+                    <div class="search-wrapper">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Поиск событий">
+
+                        <button class="search-button button">
+                            <img src="/images/Search.png" alt="The eye looking forward."
+                                class="search-button__search-icon" width="30" height="15">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Диалоговое окно фильтрации -->
+                <div id="filterDialog" class="filter-dialog">
+                    <div class="filter-dialog__container container">
+                        <div class="filter-dialog__header">
+                            <h3 class="filter-dialog__headline headline">Фильтр мероприятий</h3>
+                            <button class="filter-dialog__close-button">
+                                <span class="filter-dialog__close-line"></span>
+                                <span class="filter-dialog__close-line"></span>
+                            </button>
+                        </div>
+
+                        <div class="filter-dialog__content">
+                            <!-- Фильтр по территориальному охвату -->
+                            <div class="filter-section">
+                                <h4 class="filter-section__headline headline">Территориальный охват</h4>
+                                <div class="filter-section__area-options">
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="territory" value="local">
+                                        <span>Локальный</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="territory" value="municipal">
+                                        <span>Муниципальный</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="territory" value="regional">
+                                        <span>Региональный</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="territory" value="interregional">
+                                        <span>Межрегиональный</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="territory" value="national">
+                                        <span>Всероссийский</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="territory" value="international">
+                                        <span>Международный</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Фильтр по направлению деятельности -->
+                            <div class="filter-section">
+                                <h4 class="filter-section__headline headline">Направление деятельности</h4>
+                                <div class="filter-section__action-options">
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="social">
+                                        <span>Социальная помощь</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="animals">
+                                        <span>Защита животных</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="ecology">
+                                        <span>Экология</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="health">
+                                        <span>Здравоохранение</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="education">
+                                        <span>Образование</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="sport">
+                                        <span>Спорт</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="event">
+                                        <span>Организация мероприятий</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="emergency">
+                                        <span>Ликвидация ЧС</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="direction" value="digital">
+                                        <span>Цифровое волонтёрство</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Фильтр по формату участия -->
+                            <div class="filter-section">
+                                <h4 class="filter-section__headline headline">Формат участия</h4>
+                                <div class="filter-section__format-options">
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="format" value="offline">
+                                        <span>Очный</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="format" value="online">
+                                        <span>Дистанционный</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="format" value="hybrid">
+                                        <span>Смешанный</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-dialog__footer">
+                            <button id="resetFiltersBtn" class="filter-dialog__reset button button--secondary">Сбросить
+                                все</button>
+                            <button id="applyFiltersBtn" class="filter-dialog__apply button button--primary">Применить
+                                фильтр</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка добавления события -->
+                <div class="events-catalog__add-button-wrapper">
+                    <button id="addEventButton" class="add-event-button button button--primary">
+                        Добавить событие
+                    </button>
+                </div>
+
+                <!-- Контейнер для списка событий (динамически заполняется) -->
+                <div id="eventsListContainer" class="events-list">
+                    <!-- Сюда будут добавляться карточки событий через JavaScript -->
+                    <!-- Сообщение, если событий нет -->
+                    <div id="emptyEventsMessage" class="empty-events-message">
+                        <p>У вас пока нет созданных событий.</p>
+
+                        <p>Нажмите кнопку «Добавить событие», чтобы создать первое мероприятие.</p>
+                    </div>
+                </div>
+
+                <!-- Пустой шаблон карточки события -->
+                <template id="eventCardTemplate">
+                    <div class="event-item">
+                        <div class="event-card event-card--open">
+                            <h3 class="event-item__title event-card__headline headline"></h3>
+
+                            <p class="event-item__organizer event-card__organizer"></p>
+
+                            <div class="event-item__categories event-card__categories"></div>
+
+                            <p class="event-item__datetime event-card__datetime"></p>
+
+                            <p class="event-item__location event-card__location"></p>
+
+                            <div class="event-item__volunteers event-card__volunteers">
+                                <span class="event-card__volunteers-label">Волонтёров:</span>
+                                <span class="event-item__volunteers-count"></span>
+                            </div>
+
+                            <p class="event-item__status"></p>
+
+                            <button class="event-item__edit-button button event-card__button">
+                                Редактировать
+                            </button>
+                        </div>
+                    </div>
+                </template>
+
+
+                <!-- Модальное окно формы создания/редактирования события -->
+                <div id="eventFormModal" class="event-form-modal">
+                    <div class="event-form-modal__overlay"></div>
+                    <div class="event-form-modal__container">
+                        <div class="event-form-modal__header">
+                            <h2 class="event-form-modal__headline headline" id="eventFormTitle">Создание/редактирование
+                                события</h2>
+                            <button class="event-form-modal__close-button">
+                                <span class="event-form-modal__close-line"></span>
+                                <span class="event-form-modal__close-line"></span>
+                            </button>
+                        </div>
+
+                        <div class="event-form-modal__content">
+                            <form id="eventForm" class="event-form">
+                                <!-- Основная информация о событии -->
+                                <div class="event-form__section">
+                                    <h3 class="event-form__section-headline">Основная информация</h3>
+
+                                    <div class="event-form__group">
+                                        <label for="eventTitle">Название события</label>
+                                        <input type="text" id="eventTitle" name="title" required>
+                                    </div>
+
+                                    <div class="event-form__row">
+                                        <div class="event-form__group">
+                                            <label for="eventDateStart">Дата начала</label>
+                                            <input type="date" id="eventDateStart" name="dateStart" required>
+                                        </div>
+                                        <div class="event-form__group">
+                                            <label for="eventDateEnd">Дата окончания</label>
+                                            <input type="date" id="eventDateEnd" name="dateEnd" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="event-form__row">
+                                        <div class="event-form__group">
+                                            <label for="eventTimeStart">Время начала</label>
+                                            <input type="time" id="eventTimeStart" name="timeStart">
+                                        </div>
+                                        <div class="event-form__group">
+                                            <label for="eventTimeEnd">Время окончания</label>
+                                            <input type="time" id="eventTimeEnd" name="timeEnd">
+                                        </div>
+                                    </div>
+
+                                    <div class="event-form__group">
+                                        <label for="eventDescription">Краткое описание</label>
+                                        <textarea id="eventDescription" name="description" rows="3" required></textarea>
+                                    </div>
+
+                                    <div class="event-form__group">
+                                        <label for="eventLocation">Место проведения</label>
+                                        <input type="text" id="eventLocation" name="location">
+                                    </div>
+
+                                    <div class="event-form__group">
+                                        <label for="eventCategories">Категории (через запятую)</label>
+                                        <input type="text" id="eventCategories" name="categories"
+                                            placeholder="Например: Экология, Муниципальный, Очный">
+                                    </div>
+                                </div>
+
+                                <!-- Список мероприятий -->
+                                <div class="event-form__section">
+                                    <h3 class="event-form__section-headline">Мероприятия в рамках события</h3>
+
+                                    <div id="activitiesContainer" class="activities-container">
+                                        <!-- Сюда будут добавляться карточки мероприятий -->
+                                    </div>
+
+                                    <button type="button" id="addActivityBtn"
+                                        class="event-form__add-activity-button button button--secondary">
+                                        Добавить мероприятие
+                                    </button>
+                                </div>
+
+                                <!-- Кнопки формы -->
+                                <div class="event-form__footer">
+                                    <button type="button"
+                                        class="event-form__cancel button button--secondary">Отмена</button>
+                                    <button type="submit" class="event-form__submit button button--primary">Сохранить
+                                        событие</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шабон карточки мероприятия (для динамического добавления) -->
+                <template id="activityFormTemplate">
+                    <div class="activity-form-card">
+                        <div class="activity-form-card__header">
+                            <h4 class="activity-form-card__title">Мероприятие</h4>
+                            <button type="button" class="activity-form-card__remove">&times;</button>
+                        </div>
+
+                        <div class="event-form__group">
+                            <label>Название мероприятия</label>
+                            <input type="text" class="activity-name" required>
+                        </div>
+
+                        <div class="event-form__row">
+                            <div class="event-form__group">
+                                <label>Дата проведения</label>
+                                <input type="date" class="activity-date" required>
+                            </div>
+                            <div class="event-form__group">
+                                <label>Время проведения</label>
+                                <input type="time" class="activity-time">
+                            </div>
+                        </div>
+
+                        <div class="event-form__group">
+                            <label>Место проведения</label>
+                            <input type="text" class="activity-location">
+                        </div>
+
+                        <div class="event-form__group">
+                            <label>Описание мероприятия</label>
+                            <textarea class="activity-description" rows="2" required></textarea>
+                        </div>
+
+                        <div class="event-form__row">
+                            <div class="event-form__group">
+                                <label>Необходимое количество волонтёров</label>
+                                <input type="number" class="activity-volunteers" min="1" max="1000" required>
+                            </div>
+                            <div class="event-form__group">
+                                <label>Направление деятельности</label>
+                                <select class="activity-direction">
+                                    <option value="social">Социальная помощь</option>
+                                    <option value="animals">Защита животных</option>
+                                    <option value="ecology">Экология</option>
+                                    <option value="health">Здравоохранение</option>
+                                    <option value="education">Образование</option>
+                                    <option value="sport">Спорт</option>
+                                    <option value="event">Организация мероприятий</option>
+                                    <option value="emergency">Ликвидация ЧС</option>
+                                    <option value="digital">Цифровое волонтёрство</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="event-form__row">
+                            <div class="event-form__group">
+                                <label>Территориальный охват</label>
+                                <select class="activity-territory">
+                                    <option value="local">Локальный</option>
+                                    <option value="municipal">Муниципальный</option>
+                                    <option value="regional">Региональный</option>
+                                    <option value="interregional">Межрегиональный</option>
+                                    <option value="national">Всероссийский</option>
+                                    <option value="international">Международный</option>
+                                </select>
+                            </div>
+                            <div class="event-form__group">
+                                <label>Формат участия</label>
+                                <select class="activity-format">
+                                    <option value="offline">Очный</option>
+                                    <option value="online">Дистанционный</option>
+                                    <option value="hybrid">Смешанный</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="event-form__group">
+                            <label>Контактное лицо</label>
+                            <input type="text" class="activity-contact">
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer id="additional-info" class="footer">
+        <div class="footer__container container">
+            <h2 class="footer__headline headline">© 2026 Приложение для помощи организации мероприятий с привлечением
+                волонтёров</h2>
+
+            <!-- Блок "О проекте" -->
+            <div class="footer__content">
+                <h3 class="footer__label">О проекте:</h3>
+
+                <p class="footer__text">Информационная система разработана в рамках курсового проектирования по
+                    дисциплине «Программная инженерия» на базе кафедры программных систем Самарского университета
+                    (Институт информатики и кибернетики). Проект реализует двухролевую модель доступа (Администратор /
+                    Волонтёр) и предназначен для автоматизации волонтёрской деятельности в соответствии с
+                    законодательством РФ.</p>
+            </div>
+
+            <!-- Блок правовой информации -->
+            <div class="footer__content">
+                <h3 class="footer__label">Правовая информация:</h3>
+
+                <p class="footer__text">Вся информация носит ознакомительный характер в рамках учебного проекта.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/organizer_home.js"></script>
+</body>
+
+</html>

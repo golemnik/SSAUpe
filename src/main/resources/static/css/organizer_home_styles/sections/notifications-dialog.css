@@ -1,0 +1,87 @@
+/* Основа диалогового окна уведомлений */
+.notifications-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    color: var(--color-exodus-fruit);
+}
+
+/* Класс для показа уведомлений */
+.notifications-dialog--open {
+    display: grid;
+    place-items: center;
+}
+
+/* Контейнер уведомлений */
+.notifications-dialog__container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background-color: var(--color-ice-effect);
+    border-radius: 16px;
+    max-width: 700px;
+    margin: 5% auto;
+    width: 90%;
+    max-height: 60vh;
+    overflow: hidden;
+}
+
+/* Шапка меню: заголовок + кнопка закрытия */
+.notifications-dialog__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 25px;
+}
+
+/* Заголовок диалога */
+.notifications-dialog__headline {
+    font-size: var(--font-size-h3);
+    color: var(--color-galactic-highway);
+}
+
+/* Кнопка закрытия (крестик) */
+.notifications-dialog__close-button {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Линии крестика */
+.notifications-dialog__close-line {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: var(--color-galactic-highway);
+    border-radius: 2px;
+}
+
+/* Первая линия (повёрнута на 45°) */
+.notifications-dialog__close-line:first-child {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+/* Вторая линия (повёрнута на -45°) */
+.notifications-dialog__close-line:last-child {
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Сообщение о пустом списке событий */
+.notifications-dialog__empty {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: 20px;
+    align-items: center;
+    justify-items: center;
+    border-radius: 20px;
+    padding: 20px;
+    font-size: var(--font-size-h4);
+
+}

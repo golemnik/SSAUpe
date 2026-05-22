@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 
@@ -22,6 +23,10 @@ public class Activity {
     private String format;
     private String direction;
     private Event event;
+    private LocalDate activityDate;
+    private String location;
+    private String territory;
+    private String contact;
     private Set<Application> applications;
 
     @Id

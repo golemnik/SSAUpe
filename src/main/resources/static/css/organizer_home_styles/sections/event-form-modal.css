@@ -1,0 +1,242 @@
+/* Модальное окно формы события */
+.event-form-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    background-color: var(--color-overlay);
+    pointer-events: auto;
+    font-size: var(--font-size-h3);
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+
+.event-form-modal--open {
+    display: grid;
+    place-items: center;
+}
+
+.event-form-modal__container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background-color: var(--color-ice-effect);
+    color: var(--color-galactic-highway);
+    font-size: var(--font-size-h4);
+    border-radius: 16px;
+    max-width: 800px;
+    margin: 5% auto;
+    width: 90%;
+    max-height: 60vh;
+    pointer-events: auto;
+}
+
+.event-form-modal__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 25px;
+}
+
+.event-form-modal__headline {
+    font-size: var(--font-size-h3);
+    color: var(--color-galactic-highway);
+}
+
+.event-form-modal__close-button {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Линии крестика */
+.event-form-modal__close-line {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: var(--color-galactic-highway);
+    border-radius: 2px;
+}
+
+/* Первая линия (повёрнута на 45°) */
+.event-form-modal__close-line:first-child {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+/* Вторая линия (повёрнута на -45°) */
+.event-form-modal__close-line:last-child {
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.event-form-modal__content {
+    overflow-y: auto;
+    padding: 20px 25px;
+}
+
+/* Скроллбар */
+.event-form-modal__content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.event-form-modal__content::-webkit-scrollbar-track {
+    background: var(--color-shy-moment);
+    border-radius: 10px;
+}
+
+.event-form-modal__content::-webkit-scrollbar-thumb {
+    background: var(--color-galactic-highway);
+    border-radius: 10px;
+}
+
+/* Форма */
+.event-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+.event-form__section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+.event-form__section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.event-form__section-title {
+    font-size: 18px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-galactic-highway);
+    margin-bottom: 5px;
+}
+
+.event-form__group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.event-form__group label {
+    font-size: 14px;
+    font-weight: var(--font-weight-bold);
+}
+
+.event-form__group input,
+.event-form__group textarea,
+.event-form__group select {
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.event-form__group input:focus,
+.event-form__group textarea:focus,
+.event-form__group select:focus {
+    outline: none;
+    border-color: var(--color-galactic-highway);
+}
+
+.event-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Контейнер для мероприятий с прокруткой */
+.activities-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 15px;
+}
+
+.activities-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.activities-container::-webkit-scrollbar-track {
+    background: var(--color-shy-moment);
+    border-radius: 10px;
+}
+
+.activities-container::-webkit-scrollbar-thumb {
+    background: var(--color-galactic-highway);
+    border-radius: 10px;
+}
+
+/* Карточка формы мероприятия */
+.activity-form-card {
+    background-color: var(--color-shy-moment);
+    border-radius: 16px;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.activity-form-card__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}
+
+.activity-form-card__title {
+    font-size: 16px;
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+}
+
+.activity-form-card__remove {
+    width: 28px;
+    height: 28px;
+    background-color: #e74c3c;
+    color: var(--color-white);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Кнопка добавления мероприятия */
+.event-form__add-activity-button {
+    justify-self: start;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* Подвал формы */
+.event-form__footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+}
+
+.event-form__cancel,
+.event-form__submit {
+    padding: 12px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+}
