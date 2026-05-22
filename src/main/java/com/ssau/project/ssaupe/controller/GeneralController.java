@@ -113,6 +113,11 @@ public class GeneralController {
         return "redirect:/";
     }
 
+    @RequestMapping(value = "/organizer_home", method = RequestMethod.GET)
+    public String organizerHome(Model model) {
+        return "organizer_home";
+    }
+
     @PostMapping("/api/applications/cancel")
     @ResponseBody
     public ResponseEntity<?> cancelApplication(@RequestBody CancelRequest payload, Authentication authentication) {
@@ -351,60 +356,60 @@ public class GeneralController {
     @RequestMapping(value = "/volunteer_home", method = RequestMethod.GET)
     public String volunteerHome(Model model, Authentication authentication) {
 
-        List<Map<String, Object>> top3Cards = new ArrayList<>();
-
-        // Карточка 1
-        Map<String, Object> card1 = new HashMap<>();
-        card1.put("activityId", -1L);
-        card1.put("title", "Эко-субботник «Чистый берег»");
-        card1.put("organizer", "ЭкоСтарт");
-        card1.put("description", "Очистка береговой линии от мусора."); // ДОБАВЛЕНО
-        card1.put("direction", "Экология");
-        card1.put("forces", "Муниципальный");
-        card1.put("format", "Очный");
-        card1.put("datetime", "15–17 мая 2026, 10:00 – 16:00");
-        card1.put("location", "г. Самара, набережная, спуск у Ладьи");
-        card1.put("volunteersCurrent", 30);
-        card1.put("volunteersMax", 30);
-        card1.put("isClosed", true);
-        card1.put("text", "");
-        top3Cards.add(card1);
-
-        // Карточка 2
-        Map<String, Object> card2 = new HashMap<>();
-        card2.put("activityId", -2L);
-        card2.put("title", "Фестиваль «Добрая Встреча»");
-        card2.put("organizer", "Ресурсный центр добровольчества");
-        card2.put("description", "Помощь в организации городского фестиваля."); // ДОБАВЛЕНО
-        card2.put("direction", "Событийное");
-        card2.put("forces", "Региональный");
-        card2.put("format", "Очный");
-        card2.put("datetime", "5–7 июня 2026, 09:00 – 20:00");
-        card2.put("location", "г. Самара, Парк им. Гагарина");
-        card2.put("volunteersCurrent", 50);
-        card2.put("volunteersMax", 50);
-        card2.put("isClosed", true);
-        card2.put("text", "");
-        top3Cards.add(card2);
-
-        // Карточка 3
-        Map<String, Object> card3 = new HashMap<>();
-        card3.put("activityId", -3L);
-        card3.put("title", "Марафон «Помощь рядом»");
-        card3.put("organizer", "Федерация цифрового волонтёрства");
-        card3.put("description", "Онлайн-поддержка социальных проектов."); // ДОБАВЛЕНО
-        card3.put("direction", "Социальная помощь");
-        card3.put("forces", "Всероссийский");
-        card3.put("format", "Онлайн");
-        card3.put("datetime", "20 июня 2026, 12:00 – 15:00");
-        card3.put("location", "Онлайн-платформа");
-        card3.put("volunteersCurrent", 15);
-        card3.put("volunteersMax", 100);
-        card3.put("isClosed", true); // Сделал true, чтобы кнопка была "Набор завершён"
-        card3.put("text", "");
-        top3Cards.add(card3);
-
-        model.addAttribute("topActivities", top3Cards);
+//        List<Map<String, Object>> top3Cards = new ArrayList<>();
+//
+//        // Карточка 1
+//        Map<String, Object> card1 = new HashMap<>();
+//        card1.put("activityId", -1L);
+//        card1.put("title", "Эко-субботник «Чистый берег»");
+//        card1.put("organizer", "ЭкоСтарт");
+//        card1.put("description", "Очистка береговой линии от мусора."); // ДОБАВЛЕНО
+//        card1.put("direction", "Экология");
+//        card1.put("forces", "Муниципальный");
+//        card1.put("format", "Очный");
+//        card1.put("datetime", "15–17 мая 2026, 10:00 – 16:00");
+//        card1.put("location", "г. Самара, набережная, спуск у Ладьи");
+//        card1.put("volunteersCurrent", 30);
+//        card1.put("volunteersMax", 30);
+//        card1.put("isClosed", true);
+//        card1.put("text", "");
+//        top3Cards.add(card1);
+//
+//        // Карточка 2
+//        Map<String, Object> card2 = new HashMap<>();
+//        card2.put("activityId", -2L);
+//        card2.put("title", "Фестиваль «Добрая Встреча»");
+//        card2.put("organizer", "Ресурсный центр добровольчества");
+//        card2.put("description", "Помощь в организации городского фестиваля."); // ДОБАВЛЕНО
+//        card2.put("direction", "Событийное");
+//        card2.put("forces", "Региональный");
+//        card2.put("format", "Очный");
+//        card2.put("datetime", "5–7 июня 2026, 09:00 – 20:00");
+//        card2.put("location", "г. Самара, Парк им. Гагарина");
+//        card2.put("volunteersCurrent", 50);
+//        card2.put("volunteersMax", 50);
+//        card2.put("isClosed", true);
+//        card2.put("text", "");
+//        top3Cards.add(card2);
+//
+//        // Карточка 3
+//        Map<String, Object> card3 = new HashMap<>();
+//        card3.put("activityId", -3L);
+//        card3.put("title", "Марафон «Помощь рядом»");
+//        card3.put("organizer", "Федерация цифрового волонтёрства");
+//        card3.put("description", "Онлайн-поддержка социальных проектов."); // ДОБАВЛЕНО
+//        card3.put("direction", "Социальная помощь");
+//        card3.put("forces", "Всероссийский");
+//        card3.put("format", "Онлайн");
+//        card3.put("datetime", "20 июня 2026, 12:00 – 15:00");
+//        card3.put("location", "Онлайн-платформа");
+//        card3.put("volunteersCurrent", 15);
+//        card3.put("volunteersMax", 100);
+//        card3.put("isClosed", true); // Сделал true, чтобы кнопка была "Набор завершён"
+//        card3.put("text", "");
+//        top3Cards.add(card3);
+//
+//        model.addAttribute("topActivities", top3Cards);
         return "volunteer_home";
     }
 

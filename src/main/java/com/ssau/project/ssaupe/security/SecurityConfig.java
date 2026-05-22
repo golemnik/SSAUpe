@@ -29,7 +29,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+//                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf
+                        // Disable CSRF only for /api/** and /webhook/**
+                        .ignoringRequestMatchers("/api/organizer/events/**")
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/favicon/**").permitAll()
                         .requestMatchers("/registration", "/home", "/home/**", "/back_home").permitAll()
